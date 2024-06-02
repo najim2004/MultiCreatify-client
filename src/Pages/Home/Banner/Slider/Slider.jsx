@@ -12,26 +12,19 @@ import slider5 from "../../../../assets/slider5.jpg";
 // import slider6 from "../../../../assets/slider6.jpg";
 const Slider = () => {
   return (
-    <div className="max-w-[350px] md:max-w-[650px] lg:max-w-[650px] !mb-20 lg:!mb-0 mx-auto h-[365px]">
+    <div className="max-w-[350px] rounded-lg overflow-hidden md:max-w-[600px] lg:max-w-[650px] !mb-20 lg:!mb-0 mx-auto h-[365px]">
       <Swiper
-        effect={"coverflow"}
+        
         loop={true}
-        grabCursor={true}
         autoplay={{
-          delay: 1500,
+          delay: 2000,
           disableOnInteraction: false,
         }}
         slidesPerView={1}
-        spaceBetween={10}
+        spaceBetween={20}
         centeredSlides={true}
         // slidesPerView={"auto"}
-        coverflowEffect={{
-          rotate: 50,
-          stretch: 0,
-          depth: 100,
-          modifier: 1,
-          slideShadows: true,
-        }}
+        
         pagination={true}
         breakpoints={{
           // when window width is smaller than sm breakpoint
@@ -45,7 +38,7 @@ const Slider = () => {
           },
           // when window width is between md and lg breakpoint
           1024: {
-            slidesPerView: 2,
+            slidesPerView: 3,
           },
         }}
         modules={[EffectCoverflow, Autoplay]}

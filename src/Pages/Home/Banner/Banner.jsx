@@ -3,12 +3,12 @@ import Slider from "./Slider/Slider";
 import bannerImg from "../../../assets/banner.svg";
 const Banner = () => {
   return (
-    <div className="w-full relative gap-6 overflow-hidden pt-16 lg:pt-0 lg:gap-[200px] min-h-screen flex flex-col lg:flex-row items-center justify-around bg-[#3B23AC] bg-no-repeat bg-cover">
+    <div className="w-full relative gap-6 overflow-hidden pt-16 lg:pt-0 lg:gap-[200px] min-h-screen flex flex-col lg:flex-row items-center justify-around bg-titleClr [#3B23AC] bg-no-repeat bg-cover">
       <div
         className="absolute inset-0 top-0 bg-no-repeat bg-cover opacity-20"
         style={{ backgroundImage: `url(${bannerImg})` }}
       ></div>
-      <div className="max-w-[400px] items-center mt-10 lg:mt-0 lg:items-start flex flex-col">
+      <div className="max-w-[400px] lg:pl-28 items-center mt-10 lg:mt-0 lg:items-start flex flex-col">
         <h3 className="font-poppins text-center lg:text-start leading-[34px] md:leading-[48px] lg:leading-[68px] md:text-4xl text-3xl lg:text-6xl text-white font-bold">
           WEB.
           <br />

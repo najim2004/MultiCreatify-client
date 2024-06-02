@@ -17,7 +17,7 @@ export function StickyNavbar() {
   const navList = (
     <ul className="mt-2 mb-4 text-black font-poppins font-medium flex flex-col gap-2 lg:mb-0 lg:mt-0 lg:flex-row lg:items-center lg:gap-6">
       <li>
-        <NavLink>Dashboard</NavLink>
+        <NavLink to={"/dashboard"}>Dashboard</NavLink>
       </li>
       <li>
         <NavLink>Contact Us</NavLink>
@@ -60,7 +60,10 @@ export function StickyNavbar() {
     <div className="max-h-[768px] z-50 bg-transparent w-full fixed">
       <Navbar className="top-0 z-10 !bg-transparent h-max !shadow-none border-none backdrop-saturate-100 backdrop-blur-0 max-w-full rounded-none px-4 py-2 lg:px-8 lg:py-4">
         <div className="flex items-center text-white justify-between">
-          <Link className="mr-4 font-openSans md:text-2xl text-xl lg:text-3xl font-bold cursor-pointer py-1.5">
+          <Link
+            to={"/"}
+            className="mr-4 font-openSans md:text-2xl text-xl lg:text-3xl font-bold cursor-pointer py-1.5"
+          >
             MultiCreatify
           </Link>
           <div className="flex items-center gap-4">
