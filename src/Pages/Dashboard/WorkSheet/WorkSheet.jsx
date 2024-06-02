@@ -3,13 +3,25 @@ import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import "tailwindcss/tailwind.css";
 import useAuth from "../../../Hooks/useAuth";
+import { useQuery } from "@tanstack/react-query";
+import useAxiosSecure from "../../../Hooks/useAxiosSecure";
 
 const WorkSheet = () => {
   const { user, loading } = useAuth();
+  const axiosSecure = useAxiosSecure();
   const [tasks, setTasks] = useState([]);
   const [taskType, setTaskType] = useState("Sales");
   const [hoursWorked, setHoursWorked] = useState("");
   const [date, setDate] = useState(new Date());
+
+  const { data, isPending, error } = useQuery({
+    queryKey: ["workSheet", user?.email],
+    queryFn: async () => {
+      const { data } = await axiosSecure(`/work-sheet/${user?.email}`);
+      return data;
+    },
+  });
+  console.log("Error! When Work sheet getting", error);
 
   const handleAddTask = () => {
     const newTask = { taskType, hoursWorked, date };
