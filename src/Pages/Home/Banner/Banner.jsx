@@ -1,10 +1,11 @@
 import { FaPlayCircle } from "react-icons/fa";
+import Slider from "./Slider/Slider";
 
 const Banner = () => {
   return (
-    <div className="w-full gap-[200px] h-screen flex items-center justify-center bg-[#3B23AC]">
-      <div className="max-w-[400px]">
-        <h3 className="font-poppins leading-[68px] text-6xl text-white font-bold">
+    <div className="w-full gap-6 overflow-hidden pt-16 lg:pt-0 lg:gap-[200px] min-h-screen flex flex-col lg:flex-row items-center justify-around bg-[#3B23AC]">
+      <div className="max-w-[400px] items-center mt-10 lg:mt-0 lg:items-start flex flex-col">
+        <h3 className="font-poppins text-center lg:text-start leading-[34px] md:leading-[48px] lg:leading-[68px] md:text-4xl text-3xl lg:text-6xl text-white font-bold">
           WEB.
           <br />
           MOBILE.
@@ -13,7 +14,7 @@ const Banner = () => {
           <br />
           MARKETING.
         </h3>
-        <p className="font-openSans mt-[80px] mb-[40px] leading-7 text-lg text-[#fff000]">
+        <p className="font-openSans mt-7 md:10 text-center lg:text-start lg:mt-[60px] md:mb-8 mb-6 lg:mb-[40px] leading-7 text-lg text-[#fff000]">
           Website and App development solution for transforming and innovating
           businesses.
         </p>
@@ -21,8 +22,8 @@ const Banner = () => {
           Get Started
         </button>
       </div>
-      <div className="fle-1">
-        <div className="flex items-center gap-6">
+      <div className="fle-1 space-y-20">
+        <div className="flex flex-col lg:flex-row items-center gap-6">
           <FaPlayCircle className="text-6xl bg-red-800 text-white rounded-full" />
           <p className="text-white text-xl leading-7">
             <span className="text-[#fff000]">WE DESIGN DIGITAL SOLUTIONS</span>
@@ -30,6 +31,7 @@ const Banner = () => {
             FOR BRANDS AND COMPANIES
           </p>
         </div>
+        <Slider />
       </div>
     </div>
   );

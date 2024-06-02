@@ -57,7 +57,7 @@ export function StickyNavbar() {
   );
 
   return (
-    <div className="max-h-[768px] bg-transparent w-full fixed">
+    <div className="max-h-[768px] z-50 bg-transparent w-full fixed">
       <Navbar className="top-0 z-10 !bg-transparent h-max !shadow-none border-none backdrop-saturate-100 backdrop-blur-0 max-w-full rounded-none px-4 py-2 lg:px-8 lg:py-4">
         <div className="flex items-center text-white justify-between">
           <Link className="mr-4 font-openSans md:text-2xl text-xl lg:text-3xl font-bold cursor-pointer py-1.5">
