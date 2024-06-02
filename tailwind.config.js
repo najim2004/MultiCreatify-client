@@ -10,6 +10,9 @@ module.exports = withMT({
         poppins: '"Poppins", sans-serif',
         openSans: '"Open Sans", sans-serif',
       },
+      colors: {
+        titleClr: "#050748",
+      },
     },
   },
   plugins: [require("daisyui")],

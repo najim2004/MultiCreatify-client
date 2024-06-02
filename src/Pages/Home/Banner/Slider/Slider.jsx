@@ -12,7 +12,7 @@ import slider5 from "../../../../assets/slider5.jpg";
 // import slider6 from "../../../../assets/slider6.jpg";
 const Slider = () => {
   return (
-    <div className="max-w-[350px] lg:max-w-[650px] !mb-20 lg:!mb-0 mx-auto h-[365px]">
+    <div className="max-w-[350px] md:max-w-[650px] lg:max-w-[650px] !mb-20 lg:!mb-0 mx-auto h-[365px]">
       <Swiper
         effect={"coverflow"}
         loop={true}
@@ -41,7 +41,7 @@ const Slider = () => {
           },
           // when window width is between sm and md breakpoint
           768: {
-            slidesPerView: 1,
+            slidesPerView: 2,
           },
           // when window width is between md and lg breakpoint
           1024: {
