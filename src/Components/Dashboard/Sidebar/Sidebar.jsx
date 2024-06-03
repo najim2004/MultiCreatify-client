@@ -67,7 +67,7 @@ const Sidebar = () => {
           </div>
 
           {/* Nav Items */}
-          <div className="flex flex-col justify-between flex-1 mt-6">
+          <div className="flex flex-col font-po justify-between flex-1 mt-6">
             {/* Conditional toggle button here.. */}
 
             {/*  Menu Items */}

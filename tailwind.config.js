@@ -12,6 +12,7 @@ module.exports = withMT({
       },
       colors: {
         titleClr: "#050748",
+        desClr: "#6a6a8e",
       },
     },
   },

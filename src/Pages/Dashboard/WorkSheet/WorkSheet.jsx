@@ -5,34 +5,61 @@ import "tailwindcss/tailwind.css";
 import useAuth from "../../../Hooks/useAuth";
 import { useQuery } from "@tanstack/react-query";
 import useAxiosSecure from "../../../Hooks/useAxiosSecure";
+import toast, { Toaster } from "react-hot-toast";
+import loader from "../../../assets/loader.svg";
 
+// main function
 const WorkSheet = () => {
   const { user, loading } = useAuth();
   const axiosSecure = useAxiosSecure();
-  const [tasks, setTasks] = useState([]);
   const [taskType, setTaskType] = useState("Sales");
   const [hoursWorked, setHoursWorked] = useState("");
   const [date, setDate] = useState(new Date());
 
-  const { data, isPending, error } = useQuery({
+  // get all works or tasks
+  const {
+    data: tasks,
+    isPending,
+    error,
+    refetch,
+  } = useQuery({
     queryKey: ["workSheet", user?.email],
     queryFn: async () => {
-      const { data } = await axiosSecure(`/work-sheet/${user?.email}`);
+      const { data } = await axiosSecure.get(`/work-sheet/${user?.email}`);
       return data;
     },
   });
-  console.log("Error! When Work sheet getting", error);
 
-  const handleAddTask = () => {
-    const newTask = { taskType, hoursWorked, date };
-    setTasks([newTask, ...tasks]);
-    setTaskType("Sales");
-    setHoursWorked("");
-    setDate(new Date());
+  if (error) {
+    console.log("Error! When Work sheet getting", error);
+  }
+
+  // add work or task
+  const handleAddTask = async () => {
+    const newTask = { email: user.email, taskType, hoursWorked, date };
+    console.log(date);
+
+    if (hoursWorked) {
+      try {
+        const { data } = await axiosSecure.post(`/work-sheet`, newTask);
+        console.log(data);
+        if (data.insertedId) {
+          toast.success("Work Add/Submit Successfully!");
+          refetch();
+          setTaskType("Sales");
+          setHoursWorked("");
+          setDate(new Date());
+        }
+      } catch (error) {
+        console.log(error);
+      }
+    } else {
+      toast.error("Please enter hours worked");
+    }
   };
 
   return (
-    <div className="container mx-auto  p-4">
+    <div className="container mx-auto p-4">
       <h1 className="text-2xl font-bold text-center mb-4">Work Sheet</h1>
       <div className="overflow-x-auto">
         <table className="min-w-full bg-white border border-gray-200 rounded-lg shadow-md">
@@ -83,19 +110,25 @@ const WorkSheet = () => {
             </tr>
           </thead>
           <tbody>
-            {tasks.map((task, index) => (
+            {tasks?.map((task, index) => (
               <tr key={index} className="bg-gray-50 text-center odd:bg-white">
-                <td className="py-2 px-4 border-b">{index}</td>
+                <td className="py-2 px-4 border-b">{index + 1}</td>
                 <td className="py-2 px-4 border-b">{task.taskType}</td>
                 <td className="py-2 px-4 border-b">{task.hoursWorked}</td>
                 <td className="py-2 px-4 border-b">
-                  {task.date.toDateString()}
+                  {new Date(task.date).toDateString()}
                 </td>
               </tr>
             ))}
           </tbody>
         </table>
       </div>
+      {(isPending || loading) && (
+        <div className="w-full flex justify-center min-h-[400px] items-center">
+          <img className="size-10" src={loader} alt="" />
+        </div>
+      )}
+      <Toaster />
     </div>
   );
 };
