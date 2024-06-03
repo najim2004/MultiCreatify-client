@@ -9,7 +9,7 @@ import useAuth from "../../Hooks/useAuth";
 import Swal from "sweetalert2";
 
 const LoginSignup = () => {
-  const { registerUser, loginUser, LoginByGoogle, updateUserProfile } =
+  const { registerUser, user, loginUser, LoginByGoogle, updateUserProfile } =
     useAuth();
   const location = useLocation();
   const from = location?.state?.from || "/";
@@ -68,11 +68,13 @@ const LoginSignup = () => {
           });
           navigate(from);
           const userInfo = {
+            name,
             email,
             image: res.data.display_url || " ",
             role,
             bankAccount,
             salary,
+            verified: false,
             designation,
           };
           const { data } = await axiosPublic.post("/users", userInfo);
@@ -101,11 +103,13 @@ const LoginSignup = () => {
         });
         navigate(from);
         const userInfo = {
+          name: res.user.displayName,
           email: res.user.email,
           photoURL: res.user.photoURL,
           role: "Employee",
           bankAccount: null,
           salary: null,
+          verified: false,
           designation: null,
         };
         const { data } = await axiosPublic.post("/users", userInfo);
@@ -114,7 +118,6 @@ const LoginSignup = () => {
       console.log(error);
     }
   };
-
   const toggleAuthMode = () => {
     if (location.pathname.includes("login")) {
       navigate("/signup", { state: { from }, replace: true });
@@ -201,17 +204,33 @@ const LoginSignup = () => {
                   <select
                     defaultValue={"Employee"}
                     id="role"
-                    {...register("role", { required: "Role is required" })}
+                    {...register("role")}
                     className="shadow bg-white appearance-auto border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
                   >
                     <option value="Employee">Employee</option>
                     <option value="HR">HR</option>
                   </select>
-                  {errors.role && (
-                    <p className="text-red-500 text-xs mt-2">
-                      {errors.role.message}
-                    </p>
-                  )}
+                </div>
+                <div className="mb-4">
+                  <label
+                    className="block text-gray-700 text-sm font-bold mb-2"
+                    htmlFor="designation"
+                  >
+                    Designation
+                  </label>
+                  <select
+                    defaultValue={"default"}
+                    id="role"
+                    {...register("designation")}
+                    className="shadow bg-white appearance-auto border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                  >
+                    <option value="default">Sales Assistant</option>
+                    <option>Social Media executive</option>
+                    <option>Digital Marketer</option>
+                    <option>Front End Developer</option>
+                    <option>Back End Developer</option>
+                    <option>App Developer</option>
+                  </select>
                 </div>
                 <div className="mb-4">
                   <label
@@ -243,6 +262,7 @@ const LoginSignup = () => {
                     Salary
                   </label>
                   <input
+                    min={0}
                     type="number"
                     id="salary"
                     {...register("salary", { required: "Salary is required" })}
@@ -252,28 +272,6 @@ const LoginSignup = () => {
                   {errors.salary && (
                     <p className="text-red-500 text-xs mt-2">
                       {errors.salary.message}
-                    </p>
-                  )}
-                </div>
-                <div className="mb-4">
-                  <label
-                    className="block text-gray-700 text-sm font-bold mb-2"
-                    htmlFor="designation"
-                  >
-                    Designation
-                  </label>
-                  <input
-                    type="text"
-                    id="designation"
-                    {...register("designation", {
-                      required: "Designation is required",
-                    })}
-                    placeholder="Enter your designation"
-                    className="shadow bg-white appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                  />
-                  {errors.designation && (
-                    <p className="text-red-500 text-xs mt-2">
-                      {errors.designation.message}
                     </p>
                   )}
                 </div>
@@ -300,82 +298,87 @@ const LoginSignup = () => {
               </p>
             )}
           </div>
-          <div className="mb-4">
-            <label
-              className="block text-gray-700 text-sm font-bold mb-2"
-              htmlFor="password"
-            >
-              Password
-            </label>
-            <div className="relative">
-              <input
-                type={showPassword ? "text" : "password"}
-                id="password"
-                {...register("password", {
-                  required: "Password is required",
-                  minLength: {
-                    value: 6,
-                    message: "Password must be at least 6 characters long",
-                  },
-                  pattern: {
-                    value: /(?=.*[A-Z])(?=.*[!@#$&*])/,
-                    message:
-                      "Password must contain at least one uppercase letter and one special character",
-                  },
-                })}
-                placeholder="Enter your password"
-                className="shadow bg-white appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-              />
-              <button
-                type="button"
-                className="absolute inset-y-0 right-0 pr-3 flex items-center text-gray-500"
-                onClick={togglePasswordVisibility}
-              >
-                {showPassword ? <FaEyeSlash /> : <FaEye />}
-              </button>
-            </div>
-            {errors.password && (
-              <p className="text-red-500 text-xs mt-2">
-                {errors.password.message}
-              </p>
-            )}
-          </div>
-          {!isLogin && (
-            <div className="mb-4">
+
+          {/* password */}
+          <div className="flex justify-between gap-6">
+            <div className="mb-4 flex-1">
               <label
                 className="block text-gray-700 text-sm font-bold mb-2"
-                htmlFor="repeat-password"
+                htmlFor="password"
               >
-                Repeat Password
+                Password
               </label>
               <div className="relative">
                 <input
-                  type={showRepeatPassword ? "text" : "password"}
-                  id="repeat-password"
-                  {...register("repeatPassword", {
-                    required: "Please repeat your password",
-                    validate: (value) =>
-                      value === document.getElementById("password").value ||
-                      "Passwords do not match",
+                  type={showPassword ? "text" : "password"}
+                  id="password"
+                  {...register("password", {
+                    required: "Password is required",
+                    minLength: {
+                      value: 6,
+                      message: "Password must be at least 6 characters long",
+                    },
+                    pattern: {
+                      value: /(?=.*[A-Z])(?=.*[!@#$&*])/,
+                      message:
+                        "Password must contain at least one uppercase letter and one special character",
+                    },
                   })}
-                  placeholder="Repeat your password"
+                  placeholder="Enter your password"
                   className="shadow bg-white appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
                 />
                 <button
                   type="button"
                   className="absolute inset-y-0 right-0 pr-3 flex items-center text-gray-500"
-                  onClick={toggleRepeatPasswordVisibility}
+                  onClick={togglePasswordVisibility}
                 >
-                  {showRepeatPassword ? <FaEyeSlash /> : <FaEye />}
+                  {showPassword ? <FaEyeSlash /> : <FaEye />}
                 </button>
               </div>
-              {errors.repeatPassword && (
+              {errors.password && (
                 <p className="text-red-500 text-xs mt-2">
-                  {errors.repeatPassword.message}
+                  {errors.password.message}
                 </p>
               )}
             </div>
-          )}
+            {!isLogin && (
+              <div className="mb-4 flex-1">
+                <label
+                  className="block text-gray-700 text-sm font-bold mb-2"
+                  htmlFor="repeat-password"
+                >
+                  Repeat Password
+                </label>
+                <div className="relative">
+                  <input
+                    type={showRepeatPassword ? "text" : "password"}
+                    id="repeat-password"
+                    {...register("repeatPassword", {
+                      required: "Please repeat your password",
+                      validate: (value) =>
+                        value === document.getElementById("password").value ||
+                        "Passwords do not match",
+                    })}
+                    placeholder="Repeat your password"
+                    className="shadow bg-white appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                  />
+                  <button
+                    type="button"
+                    className="absolute inset-y-0 right-0 pr-3 flex items-center text-gray-500"
+                    onClick={toggleRepeatPasswordVisibility}
+                  >
+                    {showRepeatPassword ? <FaEyeSlash /> : <FaEye />}
+                  </button>
+                </div>
+                {errors.repeatPassword && (
+                  <p className="text-red-500 text-xs mt-2">
+                    {errors.repeatPassword.message}
+                  </p>
+                )}
+              </div>
+            )}
+          </div>
+
           <div className="flex flex-col lg:flex-row items-center lg:justify-between space-y-4">
             <button
               type="button"

@@ -29,13 +29,13 @@ const PaymentHistory = () => {
 
   const handlePageClick = (event) => {
     setCurrentPage(event.selected);
-};
+  };
 
   const offset = currentPage * itemsPerPage; // 1=0*5, 2=1*5, 3=2*5
   const currentPageData = payments?.slice(offset, offset + itemsPerPage) || [];
 
   return (
-    <div className="container mx-auto p-4">
+    <div className="container mx-auto text-nowrap lg:p-4">
       <h1 className="text-2xl lg:text-[40px] lg:mb-10 font-bold text-center mb-4">
         Salary Payment History
       </h1>
@@ -50,7 +50,7 @@ const PaymentHistory = () => {
           </thead>
           <tbody>
             {currentPageData?.map((payment, index) => (
-              <tr key={index} className="text-center">
+              <tr key={index} className="bg-gray-50 text-center odd:bg-white">
                 <td className="py-2 px-4 border-b">
                   {new Date(payment.month).toLocaleDateString("en-US", {
                     year: "numeric",

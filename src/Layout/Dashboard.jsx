@@ -7,7 +7,7 @@ const Dashboard = () => {
       <div className="">
         <Sidebar />
       </div>
-      <div className="lg:ml-64 p-5 flex-1">
+      <div className="lg:ml-64 overflow-x-hidden p-5 flex-1">
         <Outlet />
       </div>
     </div>

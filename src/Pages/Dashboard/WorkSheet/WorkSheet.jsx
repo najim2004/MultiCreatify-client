@@ -59,7 +59,7 @@ const WorkSheet = () => {
   };
 
   return (
-    <div className="container mx-auto p-4">
+    <div className="container mx-auto lg:p-4">
       <h1 className="text-2xl font-bold text-center mb-4">Work Sheet</h1>
       <div className="overflow-x-auto">
         <table className="min-w-full bg-white border border-gray-200 rounded-lg shadow-md">
@@ -102,7 +102,7 @@ const WorkSheet = () => {
                 </button>
               </th>
             </tr>
-            <tr>
+            <tr className="bg-gray-100">
               <th className="py-2 px-4 border-b">No.</th>
               <th className="py-2 px-4 border-b">Task</th>
               <th className="py-2 px-4 border-b">Hours Worked</th>

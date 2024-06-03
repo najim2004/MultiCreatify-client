@@ -1,9 +1,7 @@
 import { useState } from "react";
 import { GrLogout } from "react-icons/gr";
 import { FcSettings } from "react-icons/fc";
-import {
-  BsPersonWorkspace,
-} from "react-icons/bs";
+import { BsPersonWorkspace } from "react-icons/bs";
 import { GrUserAdmin } from "react-icons/gr";
 import { AiOutlineBars } from "react-icons/ai";
 import { NavLink } from "react-router-dom";
@@ -28,14 +26,11 @@ const Sidebar = () => {
       <div className="bg-gray-100 text-gray-800 flex justify-between lg:hidden">
         <div>
           <div className="block cursor-pointer p-4 font-bold">
-            <Link to="/">
-              <img
-                // className='hidden md:block'
-                src="https://i.ibb.co/4ZXzmq5/logo.png"
-                alt="logo"
-                width="100"
-                height="100"
-              />
+            <Link
+              to={"/"}
+              className="mr-4 font-openSans md:text-2xl text-xl lg:text-3xl font-bold cursor-pointer py-1.5"
+            >
+              MultiCreatify
             </Link>
           </div>
         </div>
