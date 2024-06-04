@@ -36,7 +36,13 @@ const WorkSheet = () => {
 
   // add work or task
   const handleAddTask = async () => {
-    const newTask = { email: user.email, taskType, hoursWorked, date };
+    const newTask = {
+      name: user?.displayName,
+      email: user?.email,
+      taskType,
+      hoursWorked,
+      date,
+    };
     console.log(date);
 
     if (hoursWorked) {

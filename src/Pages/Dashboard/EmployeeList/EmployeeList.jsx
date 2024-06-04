@@ -5,7 +5,7 @@ import {
   getPaginationRowModel,
   useReactTable,
 } from "@tanstack/react-table";
-import React from "react";
+import { useState } from "react";
 
 import { IconButton, Typography } from "@material-tailwind/react";
 import { MdArrowLeft, MdArrowRight } from "react-icons/md";
@@ -17,7 +17,7 @@ import useAuth from "../../../Hooks/useAuth";
 
 const EmployeeList = () => {
   const { loading } = useAuth();
-  const [active, setActive] = React.useState(0);
+  const [active, setActive] = useState(0);
   const axiosSecure = useAxiosSecure();
   const { data: allEmployees = [], isLoading } = useQuery({
     queryKey: ["allEmployees"],
