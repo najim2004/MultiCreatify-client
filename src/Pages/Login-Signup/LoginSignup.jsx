@@ -105,7 +105,7 @@ const LoginSignup = () => {
         const userInfo = {
           name: res.user.displayName,
           email: res.user.email,
-          photoURL: res.user.photoURL,
+          image: res.user.photoURL,
           role: "Employee",
           bankAccount: null,
           salary: null,

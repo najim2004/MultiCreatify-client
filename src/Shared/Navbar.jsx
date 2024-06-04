@@ -1,7 +1,8 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Navbar, Button, IconButton, Collapse } from "@material-tailwind/react";
 import { Link, NavLink } from "react-router-dom";
 import useAuth from "../Hooks/useAuth";
+import { MdExitToApp } from "react-icons/md";
 
 export function StickyNavbar() {
   const { user, loading, logOutUser } = useAuth();
@@ -56,10 +57,33 @@ export function StickyNavbar() {
     </>
   );
 
+  // scroll check
+  const [isScroll, setScroll] = useState(false);
+  const handleScroll = () => {
+    if (window.scrollY > 30) {
+      setScroll(true);
+    } else {
+      setScroll(false);
+    }
+  };
+  useEffect(() => {
+    window.addEventListener("scroll", handleScroll);
+
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+    };
+  }, []);
+
   return (
-    <div className="max-h-[768px] z-50 bg-transparent w-full fixed">
-      <Navbar className="top-0 z-10 !bg-transparent h-max !shadow-none border-none backdrop-saturate-100 backdrop-blur-0 max-w-full rounded-none px-4 py-2 lg:px-8 lg:py-4">
-        <div className="flex items-center text-white justify-between">
+    <div className={`z-50 bg-transparent  w-full fixed`}>
+      <Navbar
+        className={`top-0 z-10 !bg-transparent !backdrop-blur-0 h-max !shadow-none border-none backdrop-saturate-100  max-w-full rounded-none p-0`}
+      >
+        <div
+          className={`flex items-center ${
+            !isScroll ? "bg-transparent " : "bg-titleClr bg-opacity-90 "
+          } text-white justify-between px-4 py-2 lg:px-8 lg:py-4`}
+        >
           <Link
             to={"/"}
             className="mr-4 font-openSans md:text-2xl text-xl lg:text-3xl font-bold cursor-pointer py-1.5"
@@ -108,29 +132,37 @@ export function StickyNavbar() {
             </IconButton>
           </div>
         </div>
-        <Collapse open={openNav}>
-          {navList}
-          <div className="flex items-center gap-x-1">
-            {user ? (
-              <Button
-                onClick={logOutUser}
-                fullWidth
-                variant="text"
-                size="sm"
-                className="bg-gray-200"
-              >
-                <span>Logout</span>
-              </Button>
-            ) : (
-              <>
-                <Button fullWidth variant="text" size="sm" className="">
-                  <span>Log In</span>
+        <Collapse className="" open={openNav}>
+          <div
+            className={`${
+              isScroll ? "bg-gray-100" : "bg-white"
+            } p-4  m-4  rounded-lg`}
+          >
+            {navList}
+            <div className="flex items-center gap-x-1">
+              {user ? (
+                <Button
+                  onClick={logOutUser}
+                  fullWidth
+                  variant="text"
+                  size="sm"
+                  className="!bg-red-800 text-white"
+                >
+                  <span className="flex justify-center items-center gap-3 text-[15px]">
+                    Logout <MdExitToApp className="text-xl" />
+                  </span>
                 </Button>
-                <Button fullWidth variant="gradient" size="sm" className="">
-                  <span>Sign in</span>
-                </Button>
-              </>
-            )}
+              ) : (
+                <>
+                  <Button fullWidth variant="text" size="sm" className="">
+                    <span>Log In</span>
+                  </Button>
+                  <Button fullWidth variant="gradient" size="sm" className="">
+                    <span>Sign in</span>
+                  </Button>
+                </>
+              )}
+            </div>
           </div>
         </Collapse>
       </Navbar>
