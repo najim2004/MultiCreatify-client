@@ -14,7 +14,11 @@ const AllEmployeeList = () => {
   const { user, loading } = useAuth();
   const [roleType, setRoleType] = useState("");
   const axiosSecure = useAxiosSecure();
-  const { data: allEmployeeAndHR, isPending } = useQuery({
+  const {
+    data: allEmployeeAndHR,
+    isPending,
+    refetch,
+  } = useQuery({
     queryKey: ["allHRAndEmployees"],
     queryFn: async () => {
       const { data } = await axiosSecure.get("/users/admin");
@@ -88,7 +92,12 @@ const AllEmployeeList = () => {
               </tbody>
             </table>
           </div>
-          <EditModal open={open} currentObj={currentObj} setOpen={setOpen} />
+          <EditModal
+            open={open}
+            currentObj={currentObj}
+            refetch={refetch}
+            setOpen={setOpen}
+          />
           <Toaster />
         </div>
       )}

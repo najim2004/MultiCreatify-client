@@ -9,17 +9,55 @@ import {
 import { useRef } from "react";
 import useAxiosSecure from "../../../../Hooks/useAxiosSecure";
 import PropTypes from "prop-types";
-const EditModal = ({ open, setOpen, currentObj }) => {
+import { useMutation } from "@tanstack/react-query";
+import toast, { Toaster } from "react-hot-toast";
+const EditModal = ({ open, setOpen, currentObj, refetch }) => {
   const axiosSecure = useAxiosSecure();
   const userNameRef = useRef(null);
   const emailRef = useRef(null);
   const bankAccountRef = useRef(null);
   const salaryRef = useRef(null);
-  const handleSubmit = () => {
+
+  const { mutateAsync } = useMutation({
+    mutationFn: async (UpdateData) => {
+      const { data } = await axiosSecure.patch(
+        `/users/${currentObj._id}`,
+        UpdateData
+      );
+      return data;
+    },
+    onSuccess: async (data) => {
+      if (data.modifiedCount > 0) {
+        await handleOpen(!open);
+        refetch();
+        setTimeout(() => {
+          toast.success("Successfully updated");
+        }, 400);
+      } else {
+        toast.error("No changes were made");
+      }
+    },
+  });
+  const handleSubmit = async () => {
     const email = emailRef.current.querySelector("input").value;
     const name = userNameRef.current.querySelector("input").value;
     const bankAccount = bankAccountRef.current.querySelector("input").value;
     const salary = salaryRef.current.querySelector("input").value;
+    if (salary < currentObj.salary) {
+      toast.error("Salary can't be less than the current salary");
+      return;
+    }
+    const updateData = {
+      name: name,
+      email: email,
+      bankAccount: bankAccount,
+      salary: salary,
+    };
+    try {
+      mutateAsync(updateData);
+    } catch (err) {
+      console.log(err);
+    }
   };
   const handleOpen = () => setOpen(!open);
   return (
@@ -78,6 +116,7 @@ const EditModal = ({ open, setOpen, currentObj }) => {
             <span>Confirm</span>
           </Button>
         </DialogFooter>
+        <Toaster />
       </Dialog>
     </>
   );
