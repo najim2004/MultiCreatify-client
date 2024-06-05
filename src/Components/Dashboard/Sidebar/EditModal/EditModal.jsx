@@ -125,6 +125,7 @@ EditModal.propTypes = {
   open: PropTypes.bool.isRequired,
   setOpen: PropTypes.func.isRequired,
   currentObj: PropTypes.object.isRequired,
+  refetch: PropTypes.func.isRequired,
 };
 
 export default EditModal;

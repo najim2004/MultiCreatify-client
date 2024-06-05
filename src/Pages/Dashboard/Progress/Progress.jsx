@@ -5,7 +5,7 @@ import {
   getPaginationRowModel,
   useReactTable,
 } from "@tanstack/react-table";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 import { IconButton, Typography } from "@material-tailwind/react";
 import { MdArrowLeft, MdArrowRight } from "react-icons/md";
@@ -16,18 +16,57 @@ import useAuth from "../../../Hooks/useAuth";
 
 const Progress = () => {
   const { loading } = useAuth();
+  const monthRef = useRef("All");
+  const employeeRef = useRef("All");
   const [active, setActive] = useState(0);
   const axiosSecure = useAxiosSecure();
-  const [selectedEmployee, setSelectedEmployee] = useState(null);
-  const [selectedMonth, setSelectedMonth] = useState(null);
+  const [allEmployeesWorkSheet, setAllEmployeesWorkSheet] = useState([]);
 
-  const { data: allEmployeesWorkSheet = [], isLoading } = useQuery({
+  const { data: res, isLoading } = useQuery({
     queryKey: ["allEmployeesWorkSheet"],
     queryFn: async () => {
-      const { data } = await axiosSecure.get(`/work-sheet`);
-      return data;
+      const { data: allEmployeesWorkSheet } = await axiosSecure.get(
+        `/work-sheet`
+      );
+      const { data: allUser } = await axiosSecure.get(`/users?role=Employee`);
+      return { allEmployeesWorkSheet, allUser };
     },
   });
+
+  useEffect(() => {
+    setAllEmployeesWorkSheet(res?.allEmployeesWorkSheet);
+  }, [res?.allEmployeesWorkSheet]);
+
+  const handleFilter = () => {
+    const employee = employeeRef.current.value;
+    const month = monthRef.current.value;
+    try {
+      if (employee !== "All" && month === "All") {
+        const filteredData = res.allEmployeesWorkSheet.filter(
+          (item) => item.name === employee
+        );
+        setAllEmployeesWorkSheet(filteredData);
+      }
+      if (month !== "All" && employee === "All") {
+        const filteredData = res.allEmployeesWorkSheet.filter(
+          (item) => new Date(item.date).getMonth() === +month
+        );
+        setAllEmployeesWorkSheet(filteredData);
+      }
+      if (month !== "All" && employee !== "All") {
+        const filteredData = res.allEmployeesWorkSheet.filter(
+          (item) =>
+            new Date(item.date).getMonth() === +month && item.name === employee
+        );
+        setAllEmployeesWorkSheet(filteredData);
+      }
+      if (month === "All" && employee == "All") {
+        setAllEmployeesWorkSheet(res.allEmployeesWorkSheet);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   const columnHelper = createColumnHelper();
   const columns = [
@@ -75,39 +114,43 @@ const Progress = () => {
           <h1 className="text-2xl lg:text-[40px] lg:mb-10 font-bold text-center mb-4">
             All Employees Progress
           </h1>
-          <select
-            onChange={(e) => setSelectedEmployee(e.target.value)}
-            className="select w-full max-w-xs"
+          <form
+            onChange={handleFilter}
+            className="flex items-center justify-end mb-5 gap-5"
           >
-            <option disabled selected>
-              Employee Name
-            </option>
-            <option>Md Najim Hosain</option>
-            <option>Najim</option>
-            <option>Bart</option>
-            <option>Lisa</option>
-            <option>Maggie</option>
-          </select>
-          <select
-            onChange={(e) => setSelectedMonth(parseInt(e.target.value))}
-            className="select w-full max-w-xs"
-          >
-            <option disabled selected>
-              Months
-            </option>
-            <option value="5">June</option>
-            <option value="6">July</option>
-            <option value="7">August</option>
-            <option value="8">September</option>
-            <option value="9">October</option>
-            <option value="10">November</option>
-            <option value="11">December</option>
-            <option value="0">January</option>
-            <option value="1">February</option>
-            <option value="2">March</option>
-            <option value="3">April</option>
-            <option value="4">May</option>
-          </select>
+            <h3 className="text-xl font-poppins font-semibold text-desClr">
+              Filter:
+            </h3>
+            <select
+              ref={employeeRef}
+              className="bg-white h-10 focus:!outline-none rounded-sm border-[2px]"
+            >
+              <option value="All">All Employees</option>
+              {res?.allUser?.map((option) => (
+                <option value={option.name} key={option._id}>
+                  {option.name}
+                </option>
+              ))}
+            </select>
+            <select
+              ref={monthRef}
+              className="h-10 bg-white focus:!outline-none rounded-sm border-[2px]"
+            >
+              <option value="All">All Months</option>
+              <option value="0">January</option>
+              <option value="1">February</option>
+              <option value="2">March</option>
+              <option value="3">April</option>
+              <option value="4">May</option>
+              <option value="5">June</option>
+              <option value="6">July</option>
+              <option value="7">August</option>
+              <option value="8">September</option>
+              <option value="9">October</option>
+              <option value="10">November</option>
+              <option value="11">December</option>
+            </select>
+          </form>
           <div className="overflow-x-auto text-nowrap">
             <table className="min-w-full bg-white border border-gray-200 rounded-lg shadow-md">
               <thead>
@@ -128,7 +171,7 @@ const Progress = () => {
                   );
                 })}
               </thead>
-              {allEmployeesWorkSheet.length > 0 && (
+              {allEmployeesWorkSheet?.length > 0 && (
                 <tbody>
                   {table.getRowModel().rows?.map((row) => {
                     return (
@@ -153,7 +196,7 @@ const Progress = () => {
               )}
             </table>
           </div>
-          {allEmployeesWorkSheet.length > 9 && (
+          {allEmployeesWorkSheet?.length > 9 && (
             <div className="flex justify-center mt-5 items-center gap-8">
               <IconButton
                 size="sm"

@@ -9,6 +9,12 @@ import EmployeeList from "../Pages/Dashboard/EmployeeList/EmployeeList";
 import EmployeeDetails from "../Pages/Dashboard/EmployeeDetails/EmployeeDetails";
 import Progress from "../Pages/Dashboard/Progress/Progress";
 import AllEmployeeList from "../Pages/Dashboard/AllEmployeeList/AllEmployeeList";
+import PrivateRoutes from "./PrivateRoutes";
+import AdminRoute from "./AdminRoute";
+import HRRoute from "./HRRoute";
+import EmployeeRoute from "./EmployeeRoute";
+import CheckRole from "../Components/CheckRole/CheckRole";
+import Redirector from "../Components/Redirector";
 
 const router = createBrowserRouter([
   {
@@ -31,32 +37,64 @@ const router = createBrowserRouter([
   },
   {
     path: "/dashboard",
-    element: <Dashboard />,
+    element: (
+      <PrivateRoutes>
+        <Dashboard />
+      </PrivateRoutes>
+    ),
     children: [
       {
         index: true,
-        element: <WorkSheet />,
+        element: <Redirector />,
       },
+      // {
+      //   path: "work-sheet",
+      //   element: (
+      //     <EmployeeRoute>
+      //       <WorkSheet />
+      //     </EmployeeRoute>
+      //   ),
+      // },
       {
         path: "payment-history",
-        element: <PaymentHistory />,
+        element: (
+          <EmployeeRoute>
+            <PaymentHistory />
+          </EmployeeRoute>
+        ),
       },
-      {
-        path: "employee-list",
-        element: <EmployeeList />,
-      },
+      // {
+      //   path: "employee-list",
+      //   element: (
+      //     <HRRoute>
+      //       <EmployeeList />
+      //     </HRRoute>
+      //   ),
+      // },
       {
         path: "details/:id",
-        element: <EmployeeDetails />,
+        element: (
+          <HRRoute>
+            <EmployeeDetails />
+          </HRRoute>
+        ),
       },
       {
         path: "progress",
-        element: <Progress />,
+        element: (
+          <HRRoute>
+            <Progress />
+          </HRRoute>
+        ),
       },
-      {
-        path: "all-employee-list",
-        element: <AllEmployeeList />,
-      },
+      // {
+      //   path: "all-employee-list",
+      //   element: (
+      //     <AdminRoute>
+      //       <AllEmployeeList />
+      //     </AdminRoute>
+      //   ),
+      // },
     ],
   },
 ]);

@@ -43,7 +43,6 @@ const WorkSheet = () => {
       hoursWorked,
       date,
     };
-    console.log(date);
 
     if (hoursWorked) {
       try {
@@ -72,7 +71,9 @@ const WorkSheet = () => {
         </div>
       ) : (
         <div className="container mx-auto lg:p-4">
-          <h1 className="text-2xl font-bold text-center mb-4">Work Sheet</h1>
+          <h1 className="text-2xl lg:text-[40px] lg:mb-10 font-bold text-center mb-4">
+            Work Sheet
+          </h1>
           <div className="overflow-x-auto">
             <table className="min-w-full bg-white border border-gray-200 rounded-lg shadow-md">
               <thead>
@@ -102,6 +103,7 @@ const WorkSheet = () => {
                     <DatePicker
                       selected={date}
                       onChange={(date) => setDate(date)}
+                      dateFormat={"dd/MM/yyyy"}
                       className="border bg-white rounded p-2"
                     />
                   </th>

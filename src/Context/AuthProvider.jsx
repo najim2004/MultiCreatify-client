@@ -12,6 +12,7 @@ import {
 
 import { GoogleAuthProvider } from "firebase/auth";
 import { auth } from "../Firebase/Firebase.cnfig";
+import axios from "axios";
 export const AuthData = createContext(null);
 
 const AuthProvider = ({ children }) => {
@@ -27,33 +28,6 @@ const AuthProvider = ({ children }) => {
   const LoginByGoogle = () => {
     return signInWithPopup(auth, googleProvider);
   };
-
-  useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
-      if (currentUser) {
-        setUser(currentUser);
-        // store the token
-        // const userInfo = { email: currentUser.email };
-        // axiosPublic
-        //   .post("/jwt", userInfo)
-        //   .then(({ data }) => {
-        //     if (data.token) {
-        //       localStorage.setItem("access_token", data.token);
-        //     }
-        //   })
-        //   .catch((err) => {
-        //     console.log("jwt get related error from client", err);
-        //   });
-      } else {
-        setUser(null);
-        // localStorage.removeItem("access_token");
-      }
-      setLoading(false);
-    });
-    return () => {
-      return unsubscribe();
-    };
-  }, []);
 
   const loginUser = (email, password) => {
     setLoading(true);
@@ -71,6 +45,37 @@ const AuthProvider = ({ children }) => {
       photoURL: photo ? photo : " ",
     });
   };
+
+  // Get token from server
+  const getToken = async (email) => {
+    const { data } = await axios.post(
+      `${import.meta.env.VITE_BASEURL}/jwt`,
+      { email },
+      { withCredentials: true }
+    );
+    return data;
+  };
+
+  useEffect(() => {
+    const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
+      if (currentUser) {
+        setUser(currentUser);
+        // store the token
+        if (currentUser) {
+          getToken(currentUser.email);
+        }
+      } else {
+        axios.get(`${import.meta.env.VITE_BASEURL}/logout`, {
+          withCredentials: true,
+        });
+        setUser(null);
+      }
+      setLoading(false);
+    });
+    return () => {
+      return unsubscribe();
+    };
+  }, []);
 
   const dataObj = {
     user,

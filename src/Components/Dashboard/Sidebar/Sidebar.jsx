@@ -11,10 +11,12 @@ import useAuth from "../../../Hooks/useAuth";
 import { FaUsers } from "react-icons/fa";
 import { FaBarsProgress } from "react-icons/fa6";
 import { MdPayments } from "react-icons/md";
+import CheckRole from "../../CheckRole/CheckRole";
 
 const Sidebar = () => {
-  const { logOut } = useAuth();
+  const { logOutUser } = useAuth();
   const [isActive, setActive] = useState(false);
+  const [role] = CheckRole();
 
   // Sidebar Responsive Handler
   const handleToggle = () => {
@@ -67,75 +69,98 @@ const Sidebar = () => {
 
             {/*  Menu Items */}
             <nav>
-              {/* Work Sheet */}
-              <NavLink
-                to="/dashboard"
-                end
-                className={({ isActive }) =>
-                  `flex items-center px-4 py-2 my-5  transition-colors duration-300 transform  hover:bg-gray-300   hover:text-gray-700 ${
-                    isActive ? "bg-gray-300  text-gray-700" : "text-gray-600"
-                  }`
-                }
-              >
-                <BsPersonWorkspace className="w-5 h-5" />
+              {role === "Employee" && (
+                <>
+                  {/* Work Sheet */}
+                  <NavLink
+                    to="/dashboard"
+                    end
+                    className={({ isActive }) =>
+                      `flex items-center px-4 py-2 my-5  transition-colors duration-300 transform  hover:bg-gray-300   hover:text-gray-700 ${
+                        isActive
+                          ? "bg-gray-300  text-gray-700"
+                          : "text-gray-600"
+                      }`
+                    }
+                  >
+                    <BsPersonWorkspace className="w-5 h-5" />
 
-                <span className="mx-4 font-medium">Work Sheet</span>
-              </NavLink>
+                    <span className="mx-4 font-medium">Work Sheet</span>
+                  </NavLink>
 
-              {/* Payment History */}
-              <NavLink
-                to="payment-history"
-                className={({ isActive }) =>
-                  `flex items-center px-4 py-2 my-5  transition-colors duration-300 transform  hover:bg-gray-300   hover:text-gray-700 ${
-                    isActive ? "bg-gray-300  text-gray-700" : "text-gray-600"
-                  }`
-                }
-              >
-                <MdPayments className="w-5 h-5" />
+                  {/* Payment History */}
+                  <NavLink
+                    to="payment-history"
+                    className={({ isActive }) =>
+                      `flex items-center px-4 py-2 my-5  transition-colors duration-300 transform  hover:bg-gray-300   hover:text-gray-700 ${
+                        isActive
+                          ? "bg-gray-300  text-gray-700"
+                          : "text-gray-600"
+                      }`
+                    }
+                  >
+                    <MdPayments className="w-5 h-5" />
 
-                <span className="mx-4 font-medium">Payment History</span>
-              </NavLink>
+                    <span className="mx-4 font-medium">Payment History</span>
+                  </NavLink>
+                </>
+              )}
 
-              {/* Employee List */}
-              <NavLink
-                to="employee-list"
-                className={({ isActive }) =>
-                  `flex items-center px-4 py-2 my-5  transition-colors duration-300 transform  hover:bg-gray-300   hover:text-gray-700 ${
-                    isActive ? "bg-gray-300  text-gray-700" : "text-gray-600"
-                  }`
-                }
-              >
-                <FaUsers className="w-5 h-5" />
+              {role === "HR" && (
+                <>
+                  {/* Employee List */}
+                  <NavLink
+                    to="/dashboard"
+                    end
+                    className={({ isActive }) =>
+                      `flex items-center px-4 py-2 my-5  transition-colors duration-300 transform  hover:bg-gray-300   hover:text-gray-700 ${
+                        isActive
+                          ? "bg-gray-300  text-gray-700"
+                          : "text-gray-600"
+                      }`
+                    }
+                  >
+                    <FaUsers className="w-5 h-5" />
 
-                <span className="mx-4 font-medium">Employee List</span>
-              </NavLink>
-              {/* progress */}
-              <NavLink
-                to="progress"
-                className={({ isActive }) =>
-                  `flex items-center px-4 py-2 my-5  transition-colors duration-300 transform  hover:bg-gray-300   hover:text-gray-700 ${
-                    isActive ? "bg-gray-300  text-gray-700" : "text-gray-600"
-                  }`
-                }
-              >
-                <FaBarsProgress className="w-5 h-5" />
+                    <span className="mx-4 font-medium">Employee List</span>
+                  </NavLink>
+                  {/* progress */}
+                  <NavLink
+                    to="progress"
+                    className={({ isActive }) =>
+                      `flex items-center px-4 py-2 my-5  transition-colors duration-300 transform  hover:bg-gray-300   hover:text-gray-700 ${
+                        isActive
+                          ? "bg-gray-300  text-gray-700"
+                          : "text-gray-600"
+                      }`
+                    }
+                  >
+                    <FaBarsProgress className="w-5 h-5" />
 
-                <span className="mx-4 font-medium">Progress</span>
-              </NavLink>
+                    <span className="mx-4 font-medium">Progress</span>
+                  </NavLink>
+                </>
+              )}
+              {role === "Admin" && (
+                <>
+                  {/* all-employee-list */}
+                  <NavLink
+                    to="/dashboard"
+                    end
+                    className={({ isActive }) =>
+                      `flex items-center px-4 py-2 my-5  transition-colors duration-300 transform  hover:bg-gray-300   hover:text-gray-700 ${
+                        isActive
+                          ? "bg-gray-300  text-gray-700"
+                          : "text-gray-600"
+                      }`
+                    }
+                  >
+                    <GrUserAdmin className="w-5 h-5" />
 
-              {/* all-employee-list */}
-              <NavLink
-                to="all-employee-list"
-                className={({ isActive }) =>
-                  `flex items-center px-4 py-2 my-5  transition-colors duration-300 transform  hover:bg-gray-300   hover:text-gray-700 ${
-                    isActive ? "bg-gray-300  text-gray-700" : "text-gray-600"
-                  }`
-                }
-              >
-                <GrUserAdmin className="w-5 h-5" />
-
-                <span className="mx-4 font-medium">All Employee List</span>
-              </NavLink>
+                    <span className="mx-4 font-medium">All Employee List</span>
+                  </NavLink>
+                </>
+              )}
             </nav>
           </div>
         </div>
@@ -157,7 +182,7 @@ const Sidebar = () => {
             <span className="mx-4 font-medium">Profile</span>
           </NavLink>
           <button
-            onClick={logOut}
+            onClick={logOutUser}
             className="flex w-full items-center px-4 py-2 mt-5 text-gray-600 hover:bg-gray-300   hover:text-gray-700 transition-colors duration-300 transform"
           >
             <GrLogout className="w-5 h-5" />
