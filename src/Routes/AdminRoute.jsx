@@ -6,7 +6,7 @@ const AdminRoute = ({ children }) => {
   const [role, isLoading] = CheckRole();
   if (isLoading) {
     return (
-      <div className=" h-[calc(100vh-72px)] absolute z-50 w-full bg-white bg-opacity-60 backdrop-blur-[5px] grid place-items-center">
+      <div className=" min-h-[calc(100vh-50px)] absolute z-50 w-full bg-white bg-opacity-60 backdrop-blur-[5px] grid place-items-center">
         <Loader />
       </div>
     );

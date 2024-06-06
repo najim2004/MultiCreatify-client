@@ -9,21 +9,41 @@ import { useState } from "react";
 
 import { IconButton, Typography } from "@material-tailwind/react";
 import { MdArrowLeft, MdArrowRight } from "react-icons/md";
-import { useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import useAxiosSecure from "../../../Hooks/useAxiosSecure";
 import { Link } from "react-router-dom";
 import Loader from "../../../Components/Loader";
 import useAuth from "../../../Hooks/useAuth";
+import toast, { Toaster } from "react-hot-toast";
 
 const EmployeeList = () => {
   const { loading } = useAuth();
   const [active, setActive] = useState(0);
   const axiosSecure = useAxiosSecure();
-  const { data: allEmployees = [], isLoading } = useQuery({
+  const {
+    data: allEmployees = [],
+    isLoading,
+    refetch,
+  } = useQuery({
     queryKey: ["allEmployees"],
     queryFn: async () => {
       const { data } = await axiosSecure.get(`/users?role=Employee`);
       return data;
+    },
+  });
+
+  const { mutateAsync } = useMutation({
+    mutationFn: async (id) => {
+      const { data } = await axiosSecure.patch(`/users/hr/${id}`);
+      return data;
+    },
+    onSuccess: (data) => {
+      if (data.modifiedCount > 0) {
+        toast.success("Successfully updated!");
+        refetch();
+      } else {
+        toast.error("Already Verified!");
+      }
     },
   });
   const columnHelper = createColumnHelper();
@@ -38,7 +58,10 @@ const EmployeeList = () => {
       header: "Verified",
       cell: ({ row }) => (
         <div>
-          <button className={` text-white !px-3 !py-1  rounded !mr-2`}>
+          <button
+            onClick={() => handleVerified(row.original._id)}
+            className={` text-white !px-3 !py-1  rounded !mr-2`}
+          >
             {row.original.verified === false ? (
               <span className="text-xl text-red-500">❌</span>
             ) : (
@@ -95,6 +118,14 @@ const EmployeeList = () => {
     if (active + 1 === 1) return;
     setActive(active - 1);
     table.setPageIndex(active - 1);
+  };
+
+  const handleVerified = async (id) => {
+    try {
+      await mutateAsync(id);
+    } catch (err) {
+      console.log(err);
+    }
   };
   return (
     <div className="">
@@ -180,6 +211,7 @@ const EmployeeList = () => {
           )}
         </div>
       )}
+      <Toaster />
     </div>
   );
 };
