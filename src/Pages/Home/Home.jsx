@@ -1,4 +1,5 @@
 import Banner from "./Banner/Banner";
+import Newsletter from "./Newslatter/Newslatter";
 import RelationShip from "./RelationShip/RelationShip";
 import Services from "./Services/Services";
 import ShortAbout from "./ShortAbout/ShortAbout";
@@ -12,6 +13,7 @@ const Home = () => {
       <Services />
       <Testimonials />
       <RelationShip />
+      <Newsletter />
     </div>
   );
 };

@@ -29,11 +29,14 @@ const LoginSignup = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [showRepeatPassword, setShowRepeatPassword] = useState(false);
 
-  useEffect(() => {
-    if (user) {
-      navigate("/");
-    }
-  }, [user, navigate, loading]);
+  // useEffect(() => {
+  //   if (user) {
+  //     setTimeout(() => {
+  //       navigate("/");
+  //     }, 1000);
+  //   }
+  // }, [user, navigate, loading, isLogin]);
+
   useEffect(() => {
     if (location.pathname.includes("signup")) {
       setIsLogin(false);
@@ -477,8 +480,8 @@ const LoginSignup = () => {
             </div>
           </form>
         </div>
+        <Toaster />
       </div>
-      <Toaster />
     </div>
   );
 };

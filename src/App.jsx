@@ -10,7 +10,7 @@ const App = () => {
     <div>
       {!isLoginOrSignUp && <StickyNavbar />}
       <Outlet />
-      <Footer />
+      {!isLoginOrSignUp && <Footer />}
     </div>
   );
 };
