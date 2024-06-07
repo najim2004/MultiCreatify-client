@@ -16,9 +16,25 @@ import useAxiosSecure from "../../../Hooks/useAxiosSecure";
 import Swal from "sweetalert2";
 
 // const stripePromise = loadStripe(import.meta.env.VITE_STRIPE_PUBLISHABLE_KEY);
+
+// Options for months
+const months = [
+  { label: "January" },
+  { label: "February" },
+  { label: "March" },
+  { label: "April" },
+  { label: "May" },
+  { label: "June" },
+  { label: "July" },
+  { label: "August" },
+  { label: "September" },
+  { label: "October" },
+  { label: "November" },
+  { label: "December" },
+];
 const PaymentModal = ({ open, setOpen, singleUserData }) => {
   const [amount, setAmount] = useState(null);
-  const [month, setMonth] = useState("");
+  const [month, setMonth] = useState(months[new Date().getMonth()].label);
   const [year, setYear] = useState(new Date().getFullYear());
   const axiosSecure = useAxiosSecure();
   useEffect(() => {
@@ -35,21 +51,6 @@ const PaymentModal = ({ open, setOpen, singleUserData }) => {
     },
   });
 
-  // Options for months
-  const months = [
-    { label: "January" },
-    { label: "February" },
-    { label: "March" },
-    { label: "April" },
-    { label: "May" },
-    { label: "June" },
-    { label: "July" },
-    { label: "August" },
-    { label: "September" },
-    { label: "October" },
-    { label: "November" },
-    { label: "December" },
-  ];
   const handleOpen = () => setOpen(!open);
 
   const generateTransactionId = (length = 16) => {
@@ -81,8 +82,6 @@ const PaymentModal = ({ open, setOpen, singleUserData }) => {
       amount: amount ? amount : singleUserData.amount,
       transactionId,
     };
-    console.log(postData);
-    return;
     const { data: res } = await axiosSecure.post("/salary-history", postData);
     if (res.insertedId) {
       Swal.fire({
@@ -153,7 +152,7 @@ const PaymentModal = ({ open, setOpen, singleUserData }) => {
                   id="month"
                   name="month"
                   className="mt-1 block bg-white w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-                  value={months[new Date().getMonth()].label}
+                  value={month}
                   onChange={(e) => setMonth(e.target.value)}
                   required
                 >

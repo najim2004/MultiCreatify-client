@@ -14,25 +14,35 @@ import {
   Cell,
   Tooltip as RechartsTooltip,
   LabelList,
+  ResponsiveContainer,
 } from "recharts";
 import Loader from "../../../Components/Loader";
 import { Helmet } from "react-helmet-async";
+import { useEffect, useState } from "react";
 
 const EmployeeDetails = () => {
   const { id } = useParams();
   const axiosSecure = useAxiosSecure();
   const { user, loading } = useAuth();
+  const [salaryHistory, setSalaryHistory] = useState([]);
 
   const { data, isLoading } = useQuery({
     queryKey: ["singleEmployee", id],
     queryFn: async () => {
       const { data: employee } = await axiosSecure.get(`/users/${id}`);
-      const { data: salaryHistory } = await axiosSecure.get(
+      const { data: salary } = await axiosSecure.get(
         `/salary-history/${employee.email}`
       );
-      return { employee, salaryHistory };
+      return { employee, salary };
     },
   });
+
+  useEffect(() => {
+    if (data?.salary.length > 12) {
+      setSalaryHistory(data?.salary.slice(data.salary.length - 12));
+    }
+    setSalaryHistory(data?.salary);
+  }, [data?.salary]);
 
   const colors = [
     "#8884d8",
@@ -68,18 +78,18 @@ const EmployeeDetails = () => {
         </title>
       </Helmet>
       {isLoading || loading ? (
-        <div className="w-full flex justify-center min-h-[calc(100vh-50px)] items-center">
+        <div className="w-full flex justify-center overflow-hidden min-h-[calc(100vh-50px)] items-center">
           <Loader />
         </div>
       ) : (
         <div className="flex flex-col items-center mt-10">
-          <div className="flex gap-12">
+          <div className="flex flex-col lg:flex-row gap-12">
             <img
               className="w-[150px] h-[150px] rounded-full bg-gray-200"
               src={data?.employee?.image}
               alt="Employee Photo"
             />
-            <div className="space-y-2 my-auto">
+            <div className="space-y-2 my-auto text-center lg:text-start">
               <h1 className="text-4xl text-titleClr font-bold font-poppins">
                 {data?.employee?.name}
               </h1>
@@ -92,25 +102,31 @@ const EmployeeDetails = () => {
               </h2>
             </div>
           </div>
-          <div className="mt-20">
-            <BarChart width={1000} height={400} data={data?.salaryHistory}>
-              <CartesianGrid strokeDasharray="3 3" />
-              <XAxis dataKey="month" />
-              <YAxis
-                label={{ value: "Salary", angle: -90, position: "insideLeft" }}
-              />
-              <RechartsTooltip content={<CustomTooltip />} />
-              <Legend />
-              <Bar dataKey="amount">
-                {data?.salaryHistory?.map((entry, index) => (
-                  <Cell
-                    key={`cell-${index}`}
-                    fill={colors[index % colors.length]}
-                  />
-                ))}
-                <LabelList dataKey="amount" position="top" />
-              </Bar>
-            </BarChart>
+          <div className="mt-20 w-full h-[400px] !overflow-x-auto">
+            <ResponsiveContainer>
+              <BarChart data={salaryHistory}>
+                <CartesianGrid strokeDasharray="3 3" />
+                <XAxis dataKey="month" />
+                <YAxis
+                  label={{
+                    value: "Salary",
+                    angle: -90,
+                    position: "insideLeft",
+                  }}
+                />
+                <RechartsTooltip content={<CustomTooltip />} />
+                <Legend />
+                <Bar dataKey="amount" barSize={80}>
+                  {salaryHistory?.map((entry, index) => (
+                    <Cell
+                      key={`cell-${index}`}
+                      fill={colors[index % colors.length]}
+                    />
+                  ))}
+                  <LabelList dataKey="amount" position="top" />
+                </Bar>
+              </BarChart>
+            </ResponsiveContainer>
           </div>
         </div>
       )}
