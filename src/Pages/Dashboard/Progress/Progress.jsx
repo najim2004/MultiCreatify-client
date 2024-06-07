@@ -75,6 +75,9 @@ const Progress = () => {
     columnHelper.accessor("name", {
       header: "Employee Name",
     }),
+    columnHelper.accessor("email", {
+      header: "Email",
+    }),
     columnHelper.accessor("taskType", {
       header: "Task",
     }),

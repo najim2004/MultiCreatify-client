@@ -20,6 +20,7 @@ import { Helmet } from "react-helmet-async";
 
 const EmployeeList = () => {
   const [open, setOpen] = useState(false);
+  const [singleUserData, setSingleUserData] = useState({});
   const { loading, user } = useAuth();
   const [active, setActive] = useState(0);
   const axiosSecure = useAxiosSecure();
@@ -136,6 +137,7 @@ const EmployeeList = () => {
   };
 
   const handlePay = ({ data }) => {
+    setSingleUserData(data);
     setOpen(true);
   };
   return (
@@ -225,7 +227,11 @@ const EmployeeList = () => {
           )}
         </div>
       )}
-      <PaymentModal open={open} setOpen={setOpen} />
+      <PaymentModal
+        open={open}
+        setOpen={setOpen}
+        singleUserData={singleUserData}
+      />
       <Toaster />
     </div>
   );

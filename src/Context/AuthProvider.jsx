@@ -61,9 +61,7 @@ const AuthProvider = ({ children }) => {
       if (currentUser) {
         setUser(currentUser);
         // store the token
-        if (currentUser) {
-          getToken(currentUser.email);
-        }
+        getToken(currentUser.email);
       } else {
         axios.get(`${import.meta.env.VITE_BASEURL}/logout`, {
           withCredentials: true,
