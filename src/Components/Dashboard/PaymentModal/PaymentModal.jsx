@@ -5,13 +5,13 @@ import {
   DialogBody,
   DialogFooter,
 } from "@material-tailwind/react";
-import { loadStripe } from "@stripe/stripe-js";
+// import { loadStripe } from "@stripe/stripe-js";
 import PropTypes from "prop-types";
-import { Elements } from "@stripe/react-stripe-js";
+// import { Elements } from "@stripe/react-stripe-js";
 import toast, { Toaster } from "react-hot-toast";
-import CheckOutForm from "./CheckOutForm";
+// import CheckOutForm from "./CheckOutForm";
 
-const stripePromise = loadStripe(import.meta.env.VITE_STRIPE_PUBLISHABLE_KEY);
+// const stripePromise = loadStripe(import.meta.env.VITE_STRIPE_PUBLISHABLE_KEY);
 const PaymentModal = ({ open, setOpen }) => {
   const handleSubmit = async () => {};
   const handleOpen = () => setOpen(!open);
@@ -23,9 +23,9 @@ const PaymentModal = ({ open, setOpen }) => {
         </DialogHeader>
         <DialogBody className="flex justify-center">
           <div className="w-full">
-            <Elements stripe={stripePromise}>
+            {/* <Elements stripe={stripePromise}>
               <CheckOutForm />
-            </Elements>
+            </Elements> */}
           </div>
         </DialogBody>
         <DialogFooter>
