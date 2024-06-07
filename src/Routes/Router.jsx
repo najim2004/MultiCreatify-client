@@ -10,11 +10,10 @@ import EmployeeDetails from "../Pages/Dashboard/EmployeeDetails/EmployeeDetails"
 import Progress from "../Pages/Dashboard/Progress/Progress";
 import AllEmployeeList from "../Pages/Dashboard/AllEmployeeList/AllEmployeeList";
 import PrivateRoutes from "./PrivateRoutes";
-import AdminRoute from "./AdminRoute";
 import HRRoute from "./HRRoute";
 import EmployeeRoute from "./EmployeeRoute";
-import CheckRole from "../Components/CheckRole/CheckRole";
 import Redirector from "../Components/Redirector";
+import Contact from "../Pages/Contact/Contact";
 
 const router = createBrowserRouter([
   {
@@ -32,6 +31,10 @@ const router = createBrowserRouter([
       {
         path: "/login",
         element: <LoginSignup />,
+      },
+      {
+        path: "/contact",
+        element: <Contact />,
       },
     ],
   },

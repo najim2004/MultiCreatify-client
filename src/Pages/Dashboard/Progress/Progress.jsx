@@ -15,7 +15,7 @@ import Loader from "../../../Components/Loader";
 import useAuth from "../../../Hooks/useAuth";
 
 const Progress = () => {
-  const { loading } = useAuth();
+  const { loading, user } = useAuth();
   const monthRef = useRef("All");
   const employeeRef = useRef("All");
   const [active, setActive] = useState(0);
@@ -24,6 +24,7 @@ const Progress = () => {
 
   const { data: res, isLoading } = useQuery({
     queryKey: ["allEmployeesWorkSheet"],
+    enabled: !loading && !!user?.email,
     queryFn: async () => {
       const { data: allEmployeesWorkSheet } = await axiosSecure.get(
         `/work-sheet`

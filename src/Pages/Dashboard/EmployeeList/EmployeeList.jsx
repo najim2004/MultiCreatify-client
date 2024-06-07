@@ -15,9 +15,11 @@ import { Link } from "react-router-dom";
 import Loader from "../../../Components/Loader";
 import useAuth from "../../../Hooks/useAuth";
 import toast, { Toaster } from "react-hot-toast";
+import PaymentModal from "../../../Components/Dashboard/PaymentModal/PaymentModal";
 
 const EmployeeList = () => {
-  const { loading } = useAuth();
+  const [open, setOpen] = useState(false);
+  const { loading, user } = useAuth();
   const [active, setActive] = useState(0);
   const axiosSecure = useAxiosSecure();
   const {
@@ -26,6 +28,7 @@ const EmployeeList = () => {
     refetch,
   } = useQuery({
     queryKey: ["allEmployees"],
+    enabled: !loading && !!user?.email,
     queryFn: async () => {
       const { data } = await axiosSecure.get(`/users?role=Employee`);
       return data;
@@ -81,7 +84,10 @@ const EmployeeList = () => {
       header: "Pay",
       cell: ({ row }) => (
         <div>
-          <button className="bg-green-500 text-white !px-3 !py-1 btn btn-sm rounded !mr-2">
+          <button
+            onClick={() => handlePay({ data: row.original })}
+            className="bg-green-500 text-white !px-3 !py-1 btn btn-sm rounded !mr-2"
+          >
             Pay
           </button>
         </div>
@@ -126,6 +132,10 @@ const EmployeeList = () => {
     } catch (err) {
       console.log(err);
     }
+  };
+
+  const handlePay = ({ data }) => {
+    setOpen(true);
   };
   return (
     <div className="">
@@ -211,6 +221,7 @@ const EmployeeList = () => {
           )}
         </div>
       )}
+      <PaymentModal open={open} setOpen={setOpen} />
       <Toaster />
     </div>
   );

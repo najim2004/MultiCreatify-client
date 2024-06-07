@@ -18,6 +18,7 @@ const PaymentHistory = () => {
     error,
   } = useQuery({
     queryKey: ["salaryHistory", user?.email],
+    enabled: !loading && !!user?.email,
     queryFn: async () => {
       const { data } = await axiosSecure.get(`/salary-history/${user?.email}`);
       return data;

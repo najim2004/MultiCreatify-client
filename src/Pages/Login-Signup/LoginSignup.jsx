@@ -8,10 +8,18 @@ import axios from "axios";
 import useAuth from "../../Hooks/useAuth";
 import Swal from "sweetalert2";
 import Loader from "../../Components/Loader";
+import toast, { Toaster } from "react-hot-toast";
 
 const LoginSignup = () => {
-  const { registerUser, user, loginUser, LoginByGoogle, updateUserProfile } =
-    useAuth();
+  const {
+    registerUser,
+    user,
+    loginUser,
+    LoginByGoogle,
+    updateUserProfile,
+    logOutUser,
+    loading,
+  } = useAuth();
   const location = useLocation();
   const from = location?.state?.from || "/";
   const navigate = useNavigate();
@@ -21,6 +29,11 @@ const LoginSignup = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [showRepeatPassword, setShowRepeatPassword] = useState(false);
 
+  useEffect(() => {
+    if (user) {
+      navigate("/");
+    }
+  }, [user, navigate, loading]);
   useEffect(() => {
     if (location.pathname.includes("signup")) {
       setIsLogin(false);
@@ -90,40 +103,70 @@ const LoginSignup = () => {
         console.log(error);
       }
     } else {
-      const result = await loginUser(email, password);
-      Swal.fire({
-        title: "Login Successful!",
-        icon: "success",
-        timer: 1000,
-      });
-      setIsLoading(false);
-      navigate(from);
+      try {
+        const { data: response } = await axiosPublic.get(
+          `/users/role/${email}`
+        );
+        if (response?.status !== "Fired") {
+          const result = await loginUser(email, password);
+          Swal.fire({
+            title: "Login Successful!",
+            icon: "success",
+            timer: 1000,
+          });
+
+          navigate(from);
+        } else {
+          toast.error("You are already fired!");
+        }
+        setIsLoading(false);
+      } catch (error) {
+        setIsLoading(false);
+        console.log(error);
+        if (error.code == "auth/invalid-credential") {
+          toast.error("Invalid Email or Password!");
+        }
+      }
     }
   };
 
   const handleGoogleLogin = () => {
     setIsLoading(true);
     try {
-      LoginByGoogle().then(async (res) => {
-        Swal.fire({
-          title: "Login Successful!",
-          icon: "success",
-          timer: 1000,
+      LoginByGoogle()
+        .then(async (res) => {
+          const { data: response } = await axiosPublic.get(
+            `/users/role/${res?.user.email}`
+          );
+          if (response?.status === "Fired") {
+            await logOutUser();
+            toast.error("You are already fired!");
+            setIsLoading(false);
+            return;
+          }
+          Swal.fire({
+            title: "Login Successful!",
+            icon: "success",
+            timer: 1000,
+          });
+          navigate(from);
+          const userInfo = {
+            name: res.user.displayName,
+            email: res.user.email,
+            image: res.user.photoURL,
+            role: "Employee",
+            bankAccount: null,
+            salary: null,
+            verified: false,
+            designation: null,
+          };
+          const { data } = await axiosPublic.post("/users", userInfo);
+          setIsLoading(false);
+        })
+        .catch((err) => {
+          setIsLoading(false);
+          toast.error("Login Failed!");
         });
-        navigate(from);
-        const userInfo = {
-          name: res.user.displayName,
-          email: res.user.email,
-          image: res.user.photoURL,
-          role: "Employee",
-          bankAccount: null,
-          salary: null,
-          verified: false,
-          designation: null,
-        };
-        const { data } = await axiosPublic.post("/users", userInfo);
-        setIsLoading(false);
-      });
     } catch (error) {
       setIsLoading(false);
       console.log(error);
@@ -145,7 +188,13 @@ const LoginSignup = () => {
   const toggleRepeatPasswordVisibility = () => {
     setShowRepeatPassword(!showRepeatPassword);
   };
-
+  if (loading) {
+    return (
+      <div className=" h-[calc(100vh-72px)] absolute z-50 w-full bg-white bg-opacity-60 backdrop-blur-[5px] grid place-items-center">
+        <Loader />
+      </div>
+    );
+  }
   return (
     <div className="relative">
       {isLoading && (
@@ -153,7 +202,7 @@ const LoginSignup = () => {
           <Loader />
         </div>
       )}
-      <div className="flex items-center justify-center min-h-screen py-5 bg-gray-100">
+      <div className="flex items-center justify-center min-h-screen py-10 bg-gray-100">
         <div
           className={`bg-white p-8 rounded-lg shadow-lg w-full ${
             isLogin ? "max-w-md" : "max-w-4xl"
@@ -429,6 +478,7 @@ const LoginSignup = () => {
           </form>
         </div>
       </div>
+      <Toaster />
     </div>
   );
 };

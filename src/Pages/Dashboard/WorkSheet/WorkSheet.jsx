@@ -17,16 +17,17 @@ const WorkSheet = () => {
   const [date, setDate] = useState(new Date());
 
   // get all works or tasks
-  const {
-    data: tasks,
-    isPending,
-    error,
-    refetch,
-  } = useQuery({
+  const { data, isPending, error, refetch } = useQuery({
     queryKey: ["workSheet", user?.email],
+    enabled: !loading && !!user?.email,
     queryFn: async () => {
-      const { data } = await axiosSecure.get(`/work-sheet/${user?.email}`);
-      return data;
+      const { data: tasks } = await axiosSecure.get(
+        `/work-sheet/${user?.email}`
+      );
+      const { data: userStatus } = await axiosSecure.get(
+        `/users/role/${user?.email}`
+      );
+      return { tasks, userStatus };
     },
   });
 
@@ -39,6 +40,7 @@ const WorkSheet = () => {
     const newTask = {
       name: user?.displayName,
       email: user?.email,
+      status: data?.userStatus?.status || null,
       taskType,
       hoursWorked,
       date,
@@ -93,6 +95,7 @@ const WorkSheet = () => {
                   <th>
                     <input
                       type="number"
+                      min={0}
                       className="border bg-white rounded p-2"
                       placeholder="Hours Worked"
                       value={hoursWorked}
@@ -124,7 +127,7 @@ const WorkSheet = () => {
                 </tr>
               </thead>
               <tbody>
-                {tasks?.map((task, index) => (
+                {data?.tasks?.map((task, index) => (
                   <tr
                     key={index}
                     className="bg-gray-50 text-center odd:bg-white"

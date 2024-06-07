@@ -1,12 +1,13 @@
 import React, { useEffect, useState } from "react";
 import { Navbar, Button, IconButton, Collapse } from "@material-tailwind/react";
-import { Link, NavLink } from "react-router-dom";
+import { Link, NavLink, useLocation } from "react-router-dom";
 import useAuth from "../Hooks/useAuth";
 import { MdExitToApp } from "react-icons/md";
 
 export function StickyNavbar() {
   const { user, loading, logOutUser } = useAuth();
   const [openNav, setOpenNav] = React.useState(false);
+  const location = useLocation();
 
   React.useEffect(() => {
     window.addEventListener(
@@ -21,7 +22,7 @@ export function StickyNavbar() {
         <NavLink to={"/dashboard"}>Dashboard</NavLink>
       </li>
       <li>
-        <NavLink>Contact Us</NavLink>
+        <NavLink to={"/contact"}>Contact Us</NavLink>
       </li>
     </ul>
   );
@@ -81,7 +82,9 @@ export function StickyNavbar() {
       >
         <div
           className={`flex items-center ${
-            !isScroll ? "bg-transparent " : "bg-titleClr bg-opacity-90 "
+            !isScroll && location.pathname === "/"
+              ? "bg-transparent "
+              : "bg-titleClr bg-opacity-90 "
           } text-white justify-between px-4 py-2 lg:px-8 lg:py-4`}
         >
           <Link

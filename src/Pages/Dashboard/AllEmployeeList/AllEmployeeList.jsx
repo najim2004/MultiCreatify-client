@@ -24,6 +24,7 @@ const AllEmployeeList = () => {
     refetch,
   } = useQuery({
     queryKey: ["allHRAndEmployees"],
+    enabled: !loading && !!user?.email,
     queryFn: async () => {
       const { data } = await axiosSecure.get("/users/admin");
       return data;
@@ -137,6 +138,7 @@ const AllEmployeeList = () => {
                   <tr className="bg-gray-100">
                     <th className="py-2 px-4 border-b uppercase">No.</th>
                     <th className="py-2 px-4 border-b uppercase">Name</th>
+                    <th className="py-2 px-4 border-b uppercase">Email</th>
                     <th className="py-2 px-4 border-b uppercase">
                       Designation
                     </th>
@@ -153,6 +155,7 @@ const AllEmployeeList = () => {
                     >
                       <td className="py-2 px-4 border-b">{index + 1}</td>
                       <td className="py-2 px-4 border-b">{stuff.name}</td>
+                      <td className="py-2 px-4 border-b">{stuff.email}</td>
                       <td className="py-2 px-4 border-b">
                         {stuff.designation || "null"}
                       </td>
@@ -175,6 +178,7 @@ const AllEmployeeList = () => {
                       <td className="py-2 px-4 border-b">
                         <button
                           onClick={() => handleFired(stuff._id)}
+                          disabled={stuff?.status === "Fired"}
                           className="bg-red-500 text-white !px-3 !py-1 btn btn-sm rounded !mr-2"
                         >
                           {stuff?.status === "Fired" ? "Fired" : "Fire"}
