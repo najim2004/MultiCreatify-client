@@ -16,6 +16,7 @@ import Loader from "../../../Components/Loader";
 import useAuth from "../../../Hooks/useAuth";
 import toast, { Toaster } from "react-hot-toast";
 import PaymentModal from "../../../Components/Dashboard/PaymentModal/PaymentModal";
+import { Helmet } from "react-helmet-async";
 
 const EmployeeList = () => {
   const [open, setOpen] = useState(false);
@@ -139,6 +140,9 @@ const EmployeeList = () => {
   };
   return (
     <div className="">
+      <Helmet>
+        <title>Employee List | Dashboard | MultiCreatify</title>
+      </Helmet>
       {isLoading || loading ? (
         <div className="w-full flex justify-center min-h-[calc(100vh-50px)] items-center">
           <Loader />

@@ -14,11 +14,13 @@ import HRRoute from "./HRRoute";
 import EmployeeRoute from "./EmployeeRoute";
 import Redirector from "../Components/Redirector";
 import Contact from "../Pages/Contact/Contact";
+import NotFoundPage from "../Pages/404/NotFoundPage";
 
 const router = createBrowserRouter([
   {
     path: "/",
     element: <App />,
+    errorElement: <NotFoundPage />,
     children: [
       {
         path: "/",

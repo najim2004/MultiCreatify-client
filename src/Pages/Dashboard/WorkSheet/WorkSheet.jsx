@@ -7,6 +7,7 @@ import { useQuery } from "@tanstack/react-query";
 import useAxiosSecure from "../../../Hooks/useAxiosSecure";
 import toast, { Toaster } from "react-hot-toast";
 import Loader from "../../../Components/Loader";
+import { Helmet } from "react-helmet-async";
 
 // main function
 const WorkSheet = () => {
@@ -67,6 +68,9 @@ const WorkSheet = () => {
 
   return (
     <div className="">
+      <Helmet>
+        <title>Work Sheet | Dashboard | MultiCreatify</title>
+      </Helmet>
       {isPending || loading ? (
         <div className="w-full flex justify-center min-h-[calc(100vh-50px)] items-center">
           <Loader />

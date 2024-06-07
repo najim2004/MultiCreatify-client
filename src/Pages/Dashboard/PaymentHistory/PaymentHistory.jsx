@@ -5,6 +5,7 @@ import ReactPaginate from "react-paginate";
 import "tailwindcss/tailwind.css";
 import useAxiosSecure from "../../../Hooks/useAxiosSecure";
 import Loader from "../../../Components/Loader";
+import { Helmet } from "react-helmet-async";
 
 const PaymentHistory = () => {
   const { user, loading } = useAuth();
@@ -37,6 +38,9 @@ const PaymentHistory = () => {
 
   return (
     <div className="">
+      <Helmet>
+        <title>Payment History | Dashboard | MultiCreatify</title>
+      </Helmet>
       {isPending || loading ? (
         <div className="w-full flex justify-center min-h-[calc(100vh-50px)] items-center">
           <Loader />

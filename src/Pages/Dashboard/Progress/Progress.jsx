@@ -13,6 +13,7 @@ import { useQuery } from "@tanstack/react-query";
 import useAxiosSecure from "../../../Hooks/useAxiosSecure";
 import Loader from "../../../Components/Loader";
 import useAuth from "../../../Hooks/useAuth";
+import { Helmet } from "react-helmet-async";
 
 const Progress = () => {
   const { loading, user } = useAuth();
@@ -106,6 +107,9 @@ const Progress = () => {
   };
   return (
     <div className="">
+      <Helmet>
+        <title>Progress | Dashboard | MultiCreatify</title>
+      </Helmet>
       {isLoading || loading ? (
         <div className="w-full flex justify-center min-h-[calc(100vh-50px)] items-center">
           <Loader />

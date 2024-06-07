@@ -16,6 +16,7 @@ import {
   LabelList,
 } from "recharts";
 import Loader from "../../../Components/Loader";
+import { Helmet } from "react-helmet-async";
 
 const EmployeeDetails = () => {
   const { id } = useParams();
@@ -61,6 +62,11 @@ const EmployeeDetails = () => {
 
   return (
     <div className="">
+      <Helmet>
+        <title>
+          {`${data?.employee?.name}`} | Details | Dashboard | MultiCreatify
+        </title>
+      </Helmet>
       {isLoading || loading ? (
         <div className="w-full flex justify-center min-h-[calc(100vh-50px)] items-center">
           <Loader />

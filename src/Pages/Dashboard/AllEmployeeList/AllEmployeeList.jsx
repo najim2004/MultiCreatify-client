@@ -11,6 +11,7 @@ import Swal from "sweetalert2";
 import { CiGrid41 } from "react-icons/ci";
 import { LuLayoutList } from "react-icons/lu";
 import { key } from "localforage";
+import { Helmet } from "react-helmet-async";
 
 const AllEmployeeList = () => {
   const [open, setOpen] = useState(false);
@@ -104,6 +105,9 @@ const AllEmployeeList = () => {
   };
   return (
     <div className="">
+      <Helmet>
+        <title>All Employee List | Dashboard | MultiCreatify</title>
+      </Helmet>
       {isPending || loading ? (
         <div className="w-full flex justify-center min-h-[calc(100vh-50px)] items-center">
           <Loader />

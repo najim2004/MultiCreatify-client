@@ -120,7 +120,7 @@ const Testimonials = () => {
   return (
     <Container>
       <div className="mx-auto relative md:my-[60px] my-20 lg:my-[100px]">
-        <h1 className="lg:text-[40px] md:text-3xl text-2xl text-titleClr font-semibold text-center mb-8">
+        <h1 className="lg:text-[40px] md:text-3xl mb-16 text-2xl text-titleClr font-semibold text-center">
           What our clients have to say
         </h1>
         <Swiper
@@ -155,7 +155,7 @@ const Testimonials = () => {
             },
           }}
           modules={[Autoplay, Pagination, Navigation]}
-          className="mySwiper h-[375px]"
+          className="mySwiper h-[400px]"
         >
           {testimonials.map((testimonial, index) => (
             <SwiperSlide key={index}>
