@@ -5,7 +5,7 @@ import "tailwindcss/tailwind.css";
 import useAuth from "../../../Hooks/useAuth";
 import { useQuery } from "@tanstack/react-query";
 import useAxiosSecure from "../../../Hooks/useAxiosSecure";
-import toast, { Toaster } from "react-hot-toast";
+import toast from "react-hot-toast";
 import Loader from "../../../Components/Loader";
 
 // main function

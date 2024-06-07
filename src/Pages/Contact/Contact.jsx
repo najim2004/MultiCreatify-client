@@ -17,7 +17,7 @@ const Contact = () => {
   return (
     <div className="pt-20 min-h-screen mx-auto ">
       <Helmet>
-        <title>VV | Contact Details</title>
+        <title>Contact Us | MultiCreatify</title>
       </Helmet>
       <div className="max-w-[1200px]  mx-auto">
         <div className="text-center mt-4 mb-4">
@@ -29,6 +29,22 @@ const Contact = () => {
           </p>
         </div>
         <hr className="border border-gray-400" />
+        <div className="min-h-[300px] flex flex-col gap-8 justify-center my-8">
+          <h3 className="text-xl">
+            <b>Company Name:</b> MultiCreatify Inc.
+          </h3>
+          <h3 className="text-xl">
+            <b>Address:</b> 1234 MultiCreatify, <br /> Suite 5678, <br /> Tech
+            Valley, <br /> CA 94016,
+            <br /> USA
+          </h3>
+          <h3 className="text-xl">
+            <b>Contact:</b>
+            <br />
+            <b>Phone:</b> (555) 123-4567 <br /> <b>Email:</b>
+            contact@multicreatify.com
+          </h3>
+        </div>
         <div className="grid  mt-4 lg:mt-6 px-3 grid-cols-1 lg:grid-cols-2">
           <Lottie className="max-w-[500px]" animationData={contactUs} />
 

@@ -28,7 +28,9 @@ export function StickyNavbar() {
   );
   const auth = (
     <>
-      {user ? (
+      {loading ? (
+        <span className="loading loading-ring loading-lg"></span>
+      ) : user ? (
         <div className="flex gap-3">
           <img
             className="size-12 rounded-full bg-gray-300 border object-cover border-white"
