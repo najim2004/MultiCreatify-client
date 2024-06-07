@@ -9,7 +9,7 @@ import {
 import PropTypes from "prop-types";
 // import { Elements } from "@stripe/react-stripe-js";
 import toast, { Toaster } from "react-hot-toast";
-// import CheckOutForm from "./CheckOutForm";
+import CheckOutForm from "./CheckOutForm";
 
 // const stripePromise = loadStripe(import.meta.env.VITE_STRIPE_PUBLISHABLE_KEY);
 const PaymentModal = ({ open, setOpen }) => {
@@ -24,8 +24,8 @@ const PaymentModal = ({ open, setOpen }) => {
         <DialogBody className="flex justify-center">
           <div className="w-full">
             {/* <Elements stripe={stripePromise}>
-              <CheckOutForm />
             </Elements> */}
+            <CheckOutForm />
           </div>
         </DialogBody>
         <DialogFooter>
