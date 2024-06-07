@@ -10,17 +10,20 @@ import PropTypes from "prop-types";
 // import { Elements } from "@stripe/react-stripe-js";
 import toast, { Toaster } from "react-hot-toast";
 // import CheckOutForm from "./CheckOutForm";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import useAxiosSecure from "../../../Hooks/useAxiosSecure";
 import Swal from "sweetalert2";
 
 // const stripePromise = loadStripe(import.meta.env.VITE_STRIPE_PUBLISHABLE_KEY);
 const PaymentModal = ({ open, setOpen, singleUserData }) => {
-  const [amount, setAmount] = useState(singleUserData?.salary);
+  const [amount, setAmount] = useState(null);
   const [month, setMonth] = useState("");
   const [year, setYear] = useState(new Date().getFullYear());
   const axiosSecure = useAxiosSecure();
+  useEffect(() => {
+    setAmount(singleUserData?.salary);
+  }, [singleUserData?.salary]);
   const { data } = useQuery({
     queryKey: ["allPayments"],
     enabled: !!singleUserData?.email,
@@ -75,9 +78,11 @@ const PaymentModal = ({ open, setOpen, singleUserData }) => {
     const postData = {
       email: singleUserData.email,
       month: `${month} ${year}`,
-      amount: amount || "null",
+      amount: amount ? amount : singleUserData.amount,
       transactionId,
     };
+    console.log(postData);
+    return;
     const { data: res } = await axiosSecure.post("/salary-history", postData);
     if (res.insertedId) {
       Swal.fire({
@@ -131,7 +136,7 @@ const PaymentModal = ({ open, setOpen, singleUserData }) => {
                   name="amount"
                   type="number"
                   className="mt-1 block w-full bg-white px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-                  value={singleUserData?.salary}
+                  value={amount ? amount : singleUserData?.salary}
                   onChange={(e) => setAmount(e.target.value)}
                   required
                 />
