@@ -20,6 +20,7 @@ const LoginSignup = () => {
     logOutUser,
     loading,
   } = useAuth();
+  const [employeeStatus, setEmployeeStatus] = useState(null);
   const location = useLocation();
   const from = location?.state?.from || "/";
   const navigate = useNavigate();
@@ -29,13 +30,17 @@ const LoginSignup = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [showRepeatPassword, setShowRepeatPassword] = useState(false);
 
-  // useEffect(() => {
-  //   if (user) {
-  //     setTimeout(() => {
-  //       navigate("/");
-  //     }, 1000);
-  //   }
-  // }, [user, navigate, loading, isLogin]);
+  useEffect(() => {
+    if (user) {
+      axiosPublic
+        .get(`/users/role/${user?.email}`)
+        .then(({ data: response }) => {
+          if (response?.status !== "Fired") {
+            navigate("/");
+          }
+        });
+    }
+  }, [user, navigate, loading, isLogin, employeeStatus, axiosPublic]);
 
   useEffect(() => {
     if (location.pathname.includes("signup")) {
@@ -87,7 +92,7 @@ const LoginSignup = () => {
             role,
             bankAccount,
             salary,
-            verified: false,
+            verified: role === "HR" ? true : false,
             designation,
           };
           const { data } = await axiosPublic.post("/users", userInfo);
@@ -120,7 +125,11 @@ const LoginSignup = () => {
 
           navigate(from);
         } else {
-          toast.error("You are already fired!");
+          Swal.fire({
+            title: "You are already fired!",
+            icon: "warning",
+            timer: 2000,
+          });
         }
         setIsLoading(false);
       } catch (error) {
@@ -142,9 +151,15 @@ const LoginSignup = () => {
             `/users/role/${res?.user.email}`
           );
           if (response?.status === "Fired") {
-            await logOutUser();
-            toast.error("You are already fired!");
-            setIsLoading(false);
+            logOutUser().then(() => {
+              Swal.fire({
+                title: "You are already fired!",
+                icon: "warning",
+                timer: 2000,
+              });
+              setIsLoading(false);
+              console.log(response?.status);
+            });
             return;
           }
           Swal.fire({
@@ -167,8 +182,9 @@ const LoginSignup = () => {
           setIsLoading(false);
         })
         .catch((err) => {
+          console.log(err);
           setIsLoading(false);
-          toast.error("Login Failed!");
+          if (err) toast.error("Login Failed!");
         });
     } catch (error) {
       setIsLoading(false);
@@ -479,8 +495,8 @@ const LoginSignup = () => {
               </button>
             </div>
           </form>
+          <Toaster />
         </div>
-        <Toaster />
       </div>
     </div>
   );
