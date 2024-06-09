@@ -9,114 +9,125 @@ import Container from "../../../Components/Container";
 import "@smastrom/react-rating/style.css";
 import { Rating } from "@smastrom/react-rating";
 import { FaArrowLeft, FaArrowRight } from "react-icons/fa";
-const testimonials = [
-  {
-    name: "John Doe",
-    title: "Client",
-    feedback:
-      "The web development service was exceptional. Our website's performance and design have significantly improved. Highly recommended!",
-    rating: 4.5,
-    image: "https://randomuser.me/api/portraits/men/1.jpg",
-  },
-  {
-    name: "Jane Smith",
-    title: "Client",
-    feedback:
-      "Digital marketing efforts have skyrocketed our online presence. The strategies implemented were effective and results-driven.",
-    rating: 4,
-    image: "https://randomuser.me/api/portraits/women/2.jpg",
-  },
-  {
-    name: "Alice Johnson",
-    title: "Client",
-    feedback:
-      "App development was seamless and efficient. The team delivered a high-quality app that met all our requirements.",
-    rating: 5,
-    image: "https://randomuser.me/api/portraits/women/3.jpg",
-  },
-  {
-    name: "Michael Brown",
-    title: "Client",
-    feedback:
-      "Their customer service is top-notch. They addressed all my queries promptly and effectively. Truly commendable!",
-    rating: 4.8,
-    image: "https://randomuser.me/api/portraits/men/4.jpg",
-  },
-  {
-    name: "Emily White",
-    title: "Client",
-    feedback:
-      "The SEO services have boosted our organic traffic significantly. We are now ranking higher on search engines.",
-    rating: 4.7,
-    image: "https://randomuser.me/api/portraits/women/5.jpg",
-  },
-  {
-    name: "Daniel Green",
-    title: "Client",
-    feedback:
-      "The team’s creativity and innovation in graphic design are unparalleled. Our brand's visual identity has never looked better.",
-    rating: 4.9,
-    image: "https://randomuser.me/api/portraits/men/6.jpg",
-  },
-  {
-    name: "Sophia Davis",
-    title: "Client",
-    feedback:
-      "Their email marketing campaigns are highly effective. We’ve seen a significant increase in our engagement rates.",
-    rating: 4.6,
-    image: "https://randomuser.me/api/portraits/women/7.jpg",
-  },
-  {
-    name: "James Wilson",
-    title: "Client",
-    feedback:
-      "The mobile app developed by the team is intuitive and user-friendly. Our users are loving the new features.",
-    rating: 5.0,
-    image: "https://randomuser.me/api/portraits/men/8.jpg",
-  },
-  {
-    name: "Olivia Martinez",
-    title: "Client",
-    feedback:
-      "The content marketing strategy they implemented has greatly increased our brand awareness and website traffic.",
-    rating: 4.7,
-    image: "https://randomuser.me/api/portraits/women/9.jpg",
-  },
-  {
-    name: "David Anderson",
-    title: "Client",
-    feedback:
-      "The social media management service has been outstanding. Our follower count and engagement have grown exponentially.",
-    rating: 4.8,
-    image: "https://randomuser.me/api/portraits/men/10.jpg",
-  },
-  {
-    name: "Emma Thompson",
-    title: "Client",
-    feedback:
-      "Their PPC advertising strategies have yielded great results. We’ve seen a significant increase in our conversion rates.",
-    rating: 4.9,
-    image: "https://randomuser.me/api/portraits/women/11.jpg",
-  },
-  {
-    name: "William Clark",
-    title: "Client",
-    feedback:
-      "The rebranding project was a huge success. The new brand identity resonates well with our target audience.",
-    rating: 4.6,
-    image: "https://randomuser.me/api/portraits/men/12.jpg",
-  },
-  {
-    name: "Isabella Lewis",
-    title: "Client",
-    feedback:
-      "Their market research provided us with valuable insights that have informed our business strategy.",
-    rating: 4.5,
-    image: "https://randomuser.me/api/portraits/women/13.jpg",
-  },
-];
+import { useQuery } from "@tanstack/react-query";
+import useAxiosPublic from "../../../Hooks/useAxiosPublic";
+// const testimonials = [
+//   {
+//     name: "John Doe",
+//     title: "Client",
+//     feedback:
+//       "The web development service was exceptional. Our website's performance and design have significantly improved. Highly recommended!",
+//     rating: 4.5,
+//     image: "https://randomuser.me/api/portraits/men/1.jpg",
+//   },
+//   {
+//     name: "Jane Smith",
+//     title: "Client",
+//     feedback:
+//       "Digital marketing efforts have skyrocketed our online presence. The strategies implemented were effective and results-driven.",
+//     rating: 4,
+//     image: "https://randomuser.me/api/portraits/women/2.jpg",
+//   },
+//   {
+//     name: "Alice Johnson",
+//     title: "Client",
+//     feedback:
+//       "App development was seamless and efficient. The team delivered a high-quality app that met all our requirements.",
+//     rating: 5,
+//     image: "https://randomuser.me/api/portraits/women/3.jpg",
+//   },
+//   {
+//     name: "Michael Brown",
+//     title: "Client",
+//     feedback:
+//       "Their customer service is top-notch. They addressed all my queries promptly and effectively. Truly commendable!",
+//     rating: 4.8,
+//     image: "https://randomuser.me/api/portraits/men/4.jpg",
+//   },
+//   {
+//     name: "Emily White",
+//     title: "Client",
+//     feedback:
+//       "The SEO services have boosted our organic traffic significantly. We are now ranking higher on search engines.",
+//     rating: 4.7,
+//     image: "https://randomuser.me/api/portraits/women/5.jpg",
+//   },
+//   {
+//     name: "Daniel Green",
+//     title: "Client",
+//     feedback:
+//       "The team’s creativity and innovation in graphic design are unparalleled. Our brand's visual identity has never looked better.",
+//     rating: 4.9,
+//     image: "https://randomuser.me/api/portraits/men/6.jpg",
+//   },
+//   {
+//     name: "Sophia Davis",
+//     title: "Client",
+//     feedback:
+//       "Their email marketing campaigns are highly effective. We’ve seen a significant increase in our engagement rates.",
+//     rating: 4.6,
+//     image: "https://randomuser.me/api/portraits/women/7.jpg",
+//   },
+//   {
+//     name: "James Wilson",
+//     title: "Client",
+//     feedback:
+//       "The mobile app developed by the team is intuitive and user-friendly. Our users are loving the new features.",
+//     rating: 5.0,
+//     image: "https://randomuser.me/api/portraits/men/8.jpg",
+//   },
+//   {
+//     name: "Olivia Martinez",
+//     title: "Client",
+//     feedback:
+//       "The content marketing strategy they implemented has greatly increased our brand awareness and website traffic.",
+//     rating: 4.7,
+//     image: "https://randomuser.me/api/portraits/women/9.jpg",
+//   },
+//   {
+//     name: "David Anderson",
+//     title: "Client",
+//     feedback:
+//       "The social media management service has been outstanding. Our follower count and engagement have grown exponentially.",
+//     rating: 4.8,
+//     image: "https://randomuser.me/api/portraits/men/10.jpg",
+//   },
+//   {
+//     name: "Emma Thompson",
+//     title: "Client",
+//     feedback:
+//       "Their PPC advertising strategies have yielded great results. We’ve seen a significant increase in our conversion rates.",
+//     rating: 4.9,
+//     image: "https://randomuser.me/api/portraits/women/11.jpg",
+//   },
+//   {
+//     name: "William Clark",
+//     title: "Client",
+//     feedback:
+//       "The rebranding project was a huge success. The new brand identity resonates well with our target audience.",
+//     rating: 4.6,
+//     image: "https://randomuser.me/api/portraits/men/12.jpg",
+//   },
+//   {
+//     name: "Isabella Lewis",
+//     title: "Client",
+//     feedback:
+//       "Their market research provided us with valuable insights that have informed our business strategy.",
+//     rating: 4.5,
+//     image: "https://randomuser.me/api/portraits/women/13.jpg",
+//   },
+// ];
 
 const Testimonials = () => {
+  const axiosPublic = useAxiosPublic();
+  const { data: testimonials } = useQuery({
+    queryKey: "testimonials",
+    queryFn: async () => {
+      const { data } = await axiosPublic.get("/testimonials");
+      return data;
+    },
+  });
+
   return (
     <Container>
       <div className="mx-auto relative md:my-[60px] my-20 lg:my-[100px]">
@@ -157,7 +168,7 @@ const Testimonials = () => {
           modules={[Autoplay, Pagination, Navigation]}
           className="mySwiper h-[400px]"
         >
-          {testimonials.map((testimonial, index) => (
+          {testimonials?.map((testimonial, index) => (
             <SwiperSlide key={index}>
               <div className="bg-white p-6 h-[350px] rounded-lg shadow-lg text-center flex flex-col items-center">
                 <div className="w-16 h-16 rounded-full overflow-hidden mb-4">
