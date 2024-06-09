@@ -83,7 +83,7 @@ const EmployeeDetails = () => {
         </div>
       ) : (
         <div className="flex flex-col items-center mt-10">
-          <div className="flex flex-col lg:flex-row gap-12">
+          <div className="flex flex-col items-center lg:flex-row gap-12">
             <img
               className="w-[150px] h-[150px] rounded-full bg-gray-200"
               src={data?.employee?.image}
