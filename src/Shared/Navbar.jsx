@@ -51,8 +51,8 @@ export function StickyNavbar() {
               src={user?.photoURL}
             />
           </MenuHandler>
-          <MenuList>
-            <MenuItem className="flex items-center gap-2">
+          <MenuList className="">
+            <MenuItem onClick={logOutUser} className="flex items-center gap-2">
               <svg
                 width="16"
                 height="14"
@@ -65,12 +65,8 @@ export function StickyNavbar() {
                   fill="#90A4AE"
                 />
               </svg>
-              <Typography
-                onClick={logOutUser}
-                variant="small"
-                className="font-medium"
-              >
-                Sign Out
+              <Typography variant="small" className="font-medium">
+                Logout
               </Typography>
             </MenuItem>
           </MenuList>
