@@ -53,7 +53,7 @@ const PaymentHistory = () => {
           <div className="overflow-x-auto min-h-[250px]">
             <table className="min-w-full bg-white border border-gray-200 rounded-lg shadow-md">
               <thead>
-                <tr className="bg-gray-100">
+                <tr className="bg-titleClr bg-opacity-85 text-white">
                   <th className="py-2 px-4 border-b">Month</th>
                   <th className="py-2 px-4 border-b">Amount</th>
                   <th className="py-2 px-4 border-b">Transaction ID</th>
@@ -63,7 +63,7 @@ const PaymentHistory = () => {
                 {currentPageData?.map((payment, index) => (
                   <tr
                     key={index}
-                    className="bg-gray-50 text-center odd:bg-white"
+                    className="bg-gray-50 odd:bg-white text-center"
                   >
                     <td className="py-2 px-4 border-b">
                       {new Date(payment.month).toLocaleDateString("en-US", {
@@ -91,7 +91,9 @@ const PaymentHistory = () => {
               pageLinkClassName={"px-3 py-1 border rounded"}
               previousLinkClassName={"px-3 py-1 border rounded"}
               nextLinkClassName={"px-3 py-1 border rounded"}
-              activeClassName={"bg-gray-300"}
+              activeClassName={
+                "bg-titleClr rounded-sm bg-opacity-85 text-white"
+              }
             />
           )}
         </div>

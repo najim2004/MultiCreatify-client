@@ -114,7 +114,7 @@ const AllEmployeeList = () => {
         </div>
       ) : (
         <div className="container mx-auto lg:p-4">
-          <h1 className="text-2xl lg:text-[40px] lg:mb-10 font-bold text-center mb-4">
+          <h1 className="text-2xl text-titleClr lg:text-[40px] lg:mb-10 font-bold text-center mb-4">
             All Verified Employees
           </h1>
           <div className="flex justify-end gap-3  my-6">
@@ -139,7 +139,7 @@ const AllEmployeeList = () => {
             <div className="overflow-x-auto">
               <table className="min-w-full bg-white border border-gray-200 rounded-lg shadow-md">
                 <thead>
-                  <tr className="bg-gray-100">
+                  <tr className="bg-titleClr bg-opacity-85 text-white">
                     <th className="py-2 px-4 border-b uppercase">No.</th>
                     <th className="py-2 px-4 border-b uppercase">Name</th>
                     <th className="py-2 px-4 border-b uppercase">Email</th>

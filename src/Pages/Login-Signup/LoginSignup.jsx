@@ -134,7 +134,6 @@ const LoginSignup = () => {
         setIsLoading(false);
       } catch (error) {
         setIsLoading(false);
-        console.log(error);
         if (error.code == "auth/invalid-credential") {
           toast.error("Invalid Email or Password!");
         }
@@ -207,13 +206,7 @@ const LoginSignup = () => {
   const toggleRepeatPasswordVisibility = () => {
     setShowRepeatPassword(!showRepeatPassword);
   };
-  if (loading) {
-    return (
-      <div className=" h-[calc(100vh-72px)] absolute z-50 w-full bg-white bg-opacity-60 backdrop-blur-[5px] grid place-items-center">
-        <Loader />
-      </div>
-    );
-  }
+
   return (
     <div className="relative">
       {isLoading && (

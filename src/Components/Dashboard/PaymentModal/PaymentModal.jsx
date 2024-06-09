@@ -40,7 +40,7 @@ const PaymentModal = ({ open, setOpen, singleUserData }) => {
   useEffect(() => {
     setAmount(singleUserData?.salary);
   }, [singleUserData?.salary]);
-  const { data } = useQuery({
+  const { data, isLoading, refetch } = useQuery({
     queryKey: ["allPayments"],
     enabled: !!singleUserData?.email,
     queryFn: async () => {
@@ -64,14 +64,14 @@ const PaymentModal = ({ open, setOpen, singleUserData }) => {
   };
 
   const handleSubmit = async () => {
-    const findInfo = data.find((item) =>
+    const findInfo = await data.find((item) =>
       item.month.includes(`${month} ${year}`)
     );
     if (!singleUserData.verified) {
       toast.error("Please verify the employee first!");
       return;
     }
-    if (findInfo) {
+    if (findInfo && !isLoading) {
       toast.error("Salary of this month already paid!");
       return;
     }
@@ -84,6 +84,7 @@ const PaymentModal = ({ open, setOpen, singleUserData }) => {
     };
     const { data: res } = await axiosSecure.post("/salary-history", postData);
     if (res.insertedId) {
+      refetch();
       Swal.fire({
         icon: "success",
         title: "Salary Paid Successfully!",

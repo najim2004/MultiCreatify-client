@@ -119,7 +119,7 @@ const Progress = () => {
         </div>
       ) : (
         <div className="container mx-auto lg:p-4 overflow-hidden">
-          <h1 className="text-2xl lg:text-[40px] lg:mb-10 font-bold text-center mb-4">
+          <h1 className="text-2xl text-titleClr lg:text-[40px] lg:mb-10 font-bold text-center mb-4">
             All Employees Progress
           </h1>
           <form
@@ -164,7 +164,10 @@ const Progress = () => {
               <thead>
                 {table.getHeaderGroups()?.map((headerGroup) => {
                   return (
-                    <tr className="bg-gray-100" key={headerGroup.id}>
+                    <tr
+                      className="bg-titleClr bg-opacity-85 text-white"
+                      key={headerGroup.id}
+                    >
                       {headerGroup.headers?.map((header) => {
                         return (
                           <th className="py-2 px-4 border-b" key={header.id}>

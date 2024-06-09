@@ -77,7 +77,7 @@ const WorkSheet = () => {
         </div>
       ) : (
         <div className="container mx-auto lg:p-4">
-          <h1 className="text-2xl lg:text-[40px] lg:mb-10 font-bold text-center mb-4">
+          <h1 className="text-2xl text-titleClr lg:text-[40px] lg:mb-10 font-bold text-center mb-4">
             Work Sheet
           </h1>
           <div className="overflow-x-auto">
@@ -117,13 +117,13 @@ const WorkSheet = () => {
                   <th className="min-w-[150px]">
                     <button
                       onClick={handleAddTask}
-                      className="bg-gradient-to-r from-[#9C28B1] to-[#6839B7] btn btn-sm h-10 text-white p-2 rounded"
+                      className="bg-titleClr bg-opacity-85 btn btn-sm h-10 text-white p-2 rounded"
                     >
                       Add/Submit
                     </button>
                   </th>
                 </tr>
-                <tr className="bg-gray-100">
+                <tr className="bg-titleClr bg-opacity-85 text-white">
                   <th className="py-2 px-4 border-b">No.</th>
                   <th className="py-2 px-4 border-b">Task</th>
                   <th className="py-2 px-4 border-b">Hours Worked</th>
@@ -134,7 +134,7 @@ const WorkSheet = () => {
                 {data?.tasks?.map((task, index) => (
                   <tr
                     key={index}
-                    className="bg-gray-50 text-center odd:bg-white"
+                    className="bg-gray-50 odd:bg-white text-center"
                   >
                     <td className="py-2 px-4 border-b">{index + 1}</td>
                     <td className="py-2 px-4 border-b">{task.taskType}</td>
