@@ -29,7 +29,7 @@ const Contact = () => {
           </p>
         </div>
         <hr className="border border-gray-400" />
-        <div className="min-h-[300px] flex flex-col gap-8 justify-center my-8">
+        <div className="min-h-[300px] flex flex-col text-center lg:text-start gap-8 justify-center my-8">
           <h3 className="text-xl">
             <b>Company Name:</b> MultiCreatify Inc.
           </h3>
@@ -46,7 +46,7 @@ const Contact = () => {
           </h3>
         </div>
         <div className="grid  mt-4 lg:mt-6 px-3 grid-cols-1 lg:grid-cols-2">
-          <Lottie className="max-w-[500px]" animationData={contactUs} />
+          <Lottie className="max-w-[500px] mx-auto" animationData={contactUs} />
 
           <div className="p-3">
             <h3 className="text-2xl font-semibold text-center">Message Us</h3>
