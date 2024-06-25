@@ -4,8 +4,8 @@ A comprehensive solution to monitor employee workload, manage payroll, and maint
 
 ## Admin Credentials
 
-- **Admin Email:** `admin@multicreatify.com`
-- **Admin Password:** `Admin@MultiCreatify`
+- **Admin Email:** `**************`
+- **Admin Password:** `***************`
 
 ## Live Site
 
