@@ -4,8 +4,8 @@ MultiCreatify monitors employee workload, manages payroll, and maintains activit
 
 ## Admin Credentials
 
-- **Email:** `admin@multicreatify.com`
-- **Password:** `Admin@MultiCreatify`
+- **Email:** `*******************`
+- **Password:** `***************`
 
 ## Live Site
 
